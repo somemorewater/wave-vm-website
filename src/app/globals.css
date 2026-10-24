@@ -1,0 +1,18 @@
+:root {
+  --ink: #172d39;
+  --muted: #5c6b70;
+  --display: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  --body: "Avenir Next", Avenir, "Segoe UI", Roboto, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+body { margin: 0; font: 1rem/1.65 var(--body); color: var(--ink); background: #f5f4ee; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, figure { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid #9acdc0; outline-offset: 4px; border-radius: 3px; }
+.skip { position: absolute; left: -999px; top: 0; background: #fff; color: var(--ink); padding: .75rem 1rem; z-index: 100; }
+.skip:focus { left: .75rem; top: .75rem; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
