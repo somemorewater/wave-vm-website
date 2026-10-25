@@ -1,0 +1,357 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--navy);
+}
+
+.header a:focus-visible,
+.header button:focus-visible {
+  outline-color: var(--sage-soft);
+}
+
+.headerInner {
+  width: min(100%, var(--content));
+  min-height: var(--header-height);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.brand {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.wordmark {
+  display: block;
+  width: 8.6rem;
+  height: auto;
+}
+
+.desktopNav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.8rem, 2.3vw, 2rem);
+  margin-left: auto;
+}
+
+.navLink {
+  padding: 0.45rem 0;
+  border-bottom: 2px solid transparent;
+  color: #bdc9d5;
+  font-size: 0.87rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.navLink:hover {
+  color: #fff;
+}
+
+.navLink[aria-current="page"] {
+  border-bottom-color: var(--sage-soft);
+  color: #fff;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: 0.5rem;
+}
+
+.githubLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.githubLink:hover {
+  border-color: #fff;
+  background: #fff;
+  color: var(--navy-hero);
+}
+
+.githubIcon {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.menuButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.55rem;
+  height: 2.55rem;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.menuButton:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.menuIcon {
+  position: relative;
+  display: block;
+  width: 1.05rem;
+  height: 0.75rem;
+}
+
+.menuIcon span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.menuIcon span:nth-child(1) {
+  top: 0;
+}
+
+.menuIcon span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.menuIcon span:nth-child(3) {
+  bottom: 0;
+}
+
+.menuButton[aria-expanded="true"] .menuIcon span:nth-child(1) {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.menuButton[aria-expanded="true"] .menuIcon span:nth-child(2) {
+  opacity: 0;
+}
+
+.menuButton[aria-expanded="true"] .menuIcon span:nth-child(3) {
+  bottom: 50%;
+  transform: translateY(50%) rotate(-45deg);
+}
+
+.mobileMenu {
+  display: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--navy);
+}
+
+.mobileMenuInner {
+  width: min(100%, var(--content));
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem 1.1rem;
+}
+
+.mobileNavLink {
+  display: block;
+  padding: 0.72rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #c7d3dc;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mobileNavLink:hover,
+.mobileNavLink[aria-current="page"] {
+  color: #fff;
+}
+
+.mobileNavLink[aria-current="page"] {
+  padding-left: 0.55rem;
+  border-left: 2px solid var(--sage-soft);
+}
+
+.mobileGithub {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+  color: var(--sage-soft);
+  font-size: 0.86rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.footer {
+  padding: 3.75rem 0 1.5rem;
+  background: var(--navy-deep);
+  color: #a4b1b4;
+}
+
+.footerInner {
+  width: min(100%, var(--content));
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.footerTop {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.footerBrand {
+  max-width: 22rem;
+}
+
+.footerWordmark {
+  display: block;
+  width: 9rem;
+  height: auto;
+}
+
+.footerTagline {
+  margin-top: 0.85rem;
+  color: #91a6b3;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.footerStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  color: #c4d3cc;
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.footerStatus::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--sage-soft);
+}
+
+.footerCol h2 {
+  margin: 0 0 0.75rem;
+  color: #eef0e8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.footerCol a {
+  display: block;
+  width: fit-content;
+  padding: 0.2rem 0;
+  color: #a4b1b4;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.footerCol a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.footerBottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 2.75rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #71828a;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+.footerBottom a {
+  color: #9aabb2;
+  text-decoration: none;
+}
+
+.footerBottom a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+@media (min-width: 760px) {
+  .footerTop {
+    grid-template-columns: 1.35fr repeat(3, minmax(0, 0.65fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .desktopNav,
+  .headerActions {
+    display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
+  }
+
+  .mobileMenu[data-open="true"] {
+    display: block;
+  }
+}
+
+@media (max-width: 560px) {
+  .headerInner,
+  .mobileMenuInner,
+  .footerInner {
+    padding-right: 1.1rem;
+    padding-left: 1.1rem;
+  }
+
+  .wordmark {
+    width: 7.5rem;
+  }
+
+  .footerTop {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footerBrand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .footerTop {
+    grid-template-columns: 1fr;
+  }
+}

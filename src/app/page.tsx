@@ -1,19 +1,22 @@
-import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import { Features, HowItWorks, OpenSource, Closing, Footer } from "@/components/Sections";
+import {
+  DocsPreview,
+  FeaturePreview,
+  RoadmapPreview,
+  StatusSnapshot,
+} from "@/components/HomeSections";
+import { Closing, OpenSource } from "@/components/Sections";
 
 export default function Home() {
   return (
-    <>
-      <Nav />
-      <main id="main">
-        <Hero />
-        <Features />
-        <HowItWorks />
-        <OpenSource />
-        <Closing />
-      </main>
-      <Footer />
-    </>
+    <main id="main">
+      <Hero />
+      <StatusSnapshot />
+      <FeaturePreview />
+      <RoadmapPreview />
+      <DocsPreview />
+      <OpenSource />
+      <Closing />
+    </main>
   );
 }

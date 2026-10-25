@@ -1,10 +1,22 @@
 # Wave VM website
 
-The official website for Wave VM, a free and open-source virtual machine manager.
-It is a single-page Next.js landing site introducing the project, its goals, and
-the intended workflow.
+The official website for Wave VM, a local-first desktop virtual machine manager in
+development.
 
-Wave VM is still in development, and no public download is available yet.
+The site is a multi-page Next.js App Router project. It describes the project,
+separates implemented capabilities from planned work, and documents the current
+desktop foundation. It is not a download site: no public release artifacts
+exist yet.
+
+## Pages
+
+- `/` — project introduction and current status
+- `/features` — available, in-development, planned, and under-consideration work
+- `/roadmap` — milestone timeline with source evidence and explicit statuses
+- `/docs` — documentation with sidebar navigation, breadcrumbs, and previous/next links
+- `/about` — project principles, technology choices, and licensing status
+- `/install` — build the current foundation from source
+- `/docs/getting-started`, `/docs/user-guide`, `/docs/architecture`, `/docs/development` — documentation sections
 
 ## Tech stack
 
@@ -12,6 +24,8 @@ Wave VM is still in development, and no public download is available yet.
 - React
 - TypeScript
 - CSS Modules
+
+No additional UI, styling, or data-fetching dependencies are required.
 
 ## Prerequisites
 
@@ -34,27 +48,47 @@ pnpm dev
 
 The site is available at [http://localhost:3000](http://localhost:3000).
 
-## Production build
+## Checks and production build
 
 ```bash
+pnpm typecheck
 pnpm build
 pnpm start
 ```
 
-## Type checking
+The project has no configured lint script.
 
-```bash
-pnpm typecheck
-```
+## Content sources
 
-## Optional GitHub link
+Status and documentation claims are based on the inspected desktop repository,
+not on intended features. Keep these data files authoritative:
 
-GitHub links are hidden unless a repository URL is provided. To enable them,
-create a local `.env.local` file:
+- `src/data/status.ts` — status labels and descriptions
+- `src/data/features.ts` — feature groups and evidence
+- `src/data/roadmap.ts` — milestones, current stage, cross-cutting work, and considerations
+- `src/data/docs.ts` — documentation navigation and page metadata
+
+Roadmap and feature statuses should be updated at the data source rather than
+duplicated in page text. Do not add dates, percentages, release estimates,
+checksums, or download links unless the corresponding artifact actually exists.
+
+## GitHub links
+
+Desktop links default to `https://github.com/somemorewater/waveVM`. The website
+repository is `https://github.com/somemorewater/wave-vm-website`.
+
+To override the desktop repository URL locally, create `.env.local`:
 
 ```bash
 NEXT_PUBLIC_GITHUB_URL=https://github.com/your-org/wave-vm
 ```
 
-The navigation, hero, closing call to action, and footer read this value
-automatically. Local environment files are excluded from version control.
+If the value is empty, desktop GitHub links are hidden. Local environment files
+are excluded from version control.
+
+## Repository independence
+
+The website must build without the desktop repository being present. Do not
+import desktop source files at build time, create symlinks across repositories,
+or add runtime dependencies on the desktop working tree. Brand assets are copied
+into each repository.
