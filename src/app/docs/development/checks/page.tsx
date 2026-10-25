@@ -27,8 +27,9 @@ npx tauri build --no-bundle`}</code>
       </pre>
       <p>
         The Rust checks require the Tauri system libraries. QEMU is not required to
-        compile or launch the current shell. The final command builds a release binary
-        without producing an installer bundle.
+        compile or launch the current shell, but it is required for machine creation and
+        lifecycle operations. The final command builds a release binary without producing
+        an installer bundle.
       </p>
 
       <h2>Website</h2>
@@ -57,9 +58,9 @@ pnpm build`}</code>
       <h2>What a passing check means</h2>
       <p>
         A passing build means the code compiles and the static checks succeed. It does not
-        prove that a VM can run, that QEMU arguments are correct, or that a graphical
-        console works. Those behaviors require implementation and scenario testing that do
-        not exist yet.
+        prove that a guest operating system boots, that a particular QEMU build exposes
+        the required console transport, or that every guest input and reconnect path
+        works. Those behaviors require the maintainer&apos;s scenario testing.
       </p>
 
       <p>

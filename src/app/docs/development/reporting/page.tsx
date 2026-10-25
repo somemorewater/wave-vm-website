@@ -29,7 +29,7 @@ export default function ReportingPage() {
           ) : (
             "Desktop application issue tracker"
           )}{" "}
-          — host diagnostics, configuration, builds, and future VM lifecycle problems.
+          — host diagnostics, configuration, builds, VM lifecycle, and console problems.
         </li>
         <li>
           <a href={websiteIssuesUrl} rel="noreferrer" target="_blank">
@@ -44,10 +44,11 @@ export default function ReportingPage() {
         <li>Operating system, distribution, kernel version, and architecture.</li>
         <li>Wave VM version and whether it was built from source.</li>
         <li>The exact command or action that failed.</li>
-        <li>QEMU and qemu-img versions, if available.</li>
+        <li>QEMU and qemu-img versions, and whether the QEMU build supports WebSocket VNC.</li>
         <li>Whether /dev/kvm exists and whether the current user can access it.</li>
         <li>The application error code, if the interface shows one.</li>
-        <li>Relevant log output with personal paths and secrets removed.</li>
+        <li>The machine&apos;s <code>qemu.log</code> output, with personal paths and secrets removed.</li>
+        <li>Relevant log output with personal paths and console passwords removed.</li>
       </ul>
 
       <h2>Useful website information</h2>

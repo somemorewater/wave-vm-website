@@ -22,7 +22,7 @@ export default function DevelopmentPage() {
       <ul>
         <li>
           <strong>Desktop application</strong> — Tauri 2, Rust, and a static vanilla
-          HTML/CSS/JavaScript frontend. The current milestone is Milestone 1A.
+          HTML/CSS/JavaScript frontend. The current milestone is Milestone 2.
         </li>
         <li>
           <strong>Website</strong> — Next.js App Router, React, TypeScript, and CSS Modules.
@@ -32,9 +32,10 @@ export default function DevelopmentPage() {
 
       <h2>Current development state</h2>
       <p>
-        The desktop foundation and host-readiness checks are implemented. VM definitions,
-        disks, media, QMP lifecycle, networking, and the graphical console are not. The
-        roadmap records the evidence for each status.
+        The desktop foundation, host-readiness checks, VM definitions, QCOW2 disks, QEMU
+        start and stop, QMP control, and the loopback graphical console are implemented.
+        Guest installation media, networking, machine editing, and release packaging are
+        not. The roadmap records the evidence for each status.
       </p>
 
       <h2>Where to start</h2>

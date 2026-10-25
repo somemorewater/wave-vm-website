@@ -7,7 +7,7 @@ import DocPage from "@/components/DocPage";
 export const metadata: Metadata = {
   title: "Prerequisites",
   description:
-    "Required tools and host libraries for building Wave VM, plus optional QEMU and KVM dependencies.",
+    "Required tools and host libraries for building Wave VM, plus QEMU, WebSocket VNC, and KVM requirements.",
 };
 
 export default function PrerequisitesPage() {
@@ -26,6 +26,10 @@ export default function PrerequisitesPage() {
         <li>Node.js 20 or newer and npm for the Tauri CLI.</li>
         <li>Tauri 2 Linux prerequisites: WebKitGTK 4.1, GTK 3, and libsoup 3.</li>
         <li>Build tools and pkg-config for compiling native dependencies.</li>
+        <li>
+          QEMU, including a system emulator for the host architecture and{" "}
+          <code>qemu-img</code>. Both are required to create disks and run a machine.
+        </li>
       </ul>
       <p>
         On Arch Linux, the relevant packages are <code>webkit2gtk-4.1</code>,{" "}
@@ -33,31 +37,34 @@ export default function PrerequisitesPage() {
         distribution.
       </p>
 
-      <h3>Optional for the current build</h3>
-      <ul>
-        <li>
-          QEMU, including a system emulator for the host architecture and{" "}
-          <code>qemu-img</code>. The current build discovers and probes them but does not
-          launch a VM.
-        </li>
-        <li>
-          A usable Linux KVM device at <code>/dev/kvm</code>. The current build verifies
-          it by opening the device and issuing <code>KVM_GET_API_VERSION</code>.
-        </li>
-      </ul>
+      <h3>Console requirement</h3>
+      <p>
+        The guest console uses QEMU&apos;s WebSocket VNC transport and a bundled noVNC
+        client. The installed QEMU must support WebSocket VNC. The current implementation
+        was verified with QEMU 11.1.2, but no formal minimum QEMU version has been
+        established.
+      </p>
 
-      <DocNote title="No minimum QEMU version has been verified" tone="warning">
-        The code parses the version reported by <code>--version</code>, but the project
-        has not established a minimum supported QEMU version. Do not assume that a
-        discovered executable is compatible with future VM lifecycle features.
+      <h3>Optional acceleration</h3>
+      <p>
+        A usable Linux KVM device at <code>/dev/kvm</code> enables hardware acceleration.
+        The application verifies it by opening the device and issuing{" "}
+        <code>KVM_GET_API_VERSION</code>. Without it, QEMU uses software emulation (TCG),
+        which is functional but may be slow.
+      </p>
+
+      <DocNote title="The lifecycle requires Linux x86_64" tone="warning">
+        Machine creation and QEMU lifecycle operations currently require a Linux x86_64
+        host and accept x86_64 guests only. Other hosts are reported as unsupported before
+        files or processes are created. macOS and Windows behavior has not been verified.
       </DocNote>
 
       <h2>Supported host environments</h2>
       <p>
-        Linux is the only host environment exercised while building the current
-        foundation. The Linux KVM probe is implemented. Source code contains QEMU
-        discovery paths for other platforms, but macOS and Windows host behavior has not
-        been verified. No support claim is made for those hosts.
+        Linux x86_64 is the only host environment exercised while building the current
+        lifecycle. The Linux KVM probe is implemented. Source code contains QEMU discovery
+        paths for other platforms, but macOS and Windows host behavior has not been
+        verified. No support claim is made for those hosts.
       </p>
       <p>
         The project must not be run as root. KVM access should be granted through the

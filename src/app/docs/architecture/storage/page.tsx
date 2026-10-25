@@ -8,7 +8,7 @@ import { sourceUrl } from "@/config";
 export const metadata: Metadata = {
   title: "Storage and configuration",
   description:
-    "Wave VM's application data directory, schema-v1 config.json, atomic writes, Unix permissions, and reserved vms directory.",
+    "Wave VM's application data directory, schema-v2 config.json, VM disks, atomic writes, and Unix permissions.",
 };
 
 export default function StoragePage() {
@@ -39,39 +39,46 @@ export default function StoragePage() {
 
       <h2>Created files</h2>
       <pre>
-        <code>{`config.json   # versioned application configuration
-vms/          # reserved for future VM definitions and disks`}</code>
+        <code>{`config.json             # versioned application configuration (schema v2)
+vms/<machine-id>/       # one directory per machine
+  disk.qcow2            # blank QCOW2 virtual disk
+  qemu.log              # latest QEMU run log
+  qmp.sock              # private QMP socket while running`}</code>
       </pre>
       <p>
-        The <code>vms/</code> directory is created but is not yet a VM store. No VM
-        definitions, disk images, or installation media are written by the current build.
+        The <code>vms/</code> directory is created at startup. A machine directory and
+        its disk are created when a machine is created. Wave VM does not automatically
+        remove VM directories or disks.
       </p>
 
       <h2>Configuration schema</h2>
       <p>
-        The current schema is version 1. <code>config.json</code> contains{" "}
-        <code>schemaVersion</code>, <code>createdAtUnix</code>, and{" "}
-        <code>lastOpenedUnix</code>. The file is rewritten when the application opens so
-        that <code>lastOpenedUnix</code> stays current.
+        The current schema is version 2. <code>config.json</code> contains{" "}
+        <code>schemaVersion</code>, <code>createdAtUnix</code>,{" "}
+        <code>lastOpenedUnix</code>, and a <code>vms</code> array. Each VM record stores
+        its identifier, name, guest architecture, memory, virtual CPUs, disk path, disk
+        size, lifecycle state, optional last error, and timestamps.
       </p>
       <p>
-        A schema version of 0 is migrated to version 1. A version newer than the supported
-        schema is rejected with <code>config_version_unsupported</code> rather than being
-        silently rewritten.
+        Schema versions 0 and 1 are migrated to version 2. A version newer than the
+        supported schema is rejected with <code>config_version_unsupported</code> rather
+        than being silently rewritten. Persisted starting, running, or stopping states are
+        reconciled when the application starts.
       </p>
 
       <h2>Atomic writes and permissions</h2>
       <p>
         Configuration writes use a temporary file in the same directory, followed by an
         atomic rename. On Unix, the temporary file and final configuration are written with
-        0600 permissions. Application directories are set to 0700. The parent directory is
-        synced after a successful rename.
+        0600 permissions. Application directories and machine directories are set to
+        0700. VM disks are set to 0600. The parent directory is synced after a successful
+        rename.
       </p>
 
-      <DocNote title="This is not a VM storage layer yet" tone="planned">
-        Disk creation, VM definition persistence, media files, and deletion workflows do
-        not exist. The current storage code protects the application configuration; it
-        does not manage virtual machine data.
+      <DocNote title="Storage management is read-only" tone="info">
+        Disk creation is implemented, but resizing, deleting, compacting, and attaching
+        existing disks are not. The Storage page is an inventory. Wave VM preserves
+        existing disks and machine directories rather than removing them automatically.
       </DocNote>
 
       <h2>Source references</h2>
@@ -88,13 +95,23 @@ vms/          # reserved for future VM definitions and disks`}</code>
         </li>
         <li>
           <a
+            href={sourceUrl("src-tauri/src/vm/disk.rs")}
+            rel="noreferrer"
+            target="_blank"
+          >
+            vm/disk.rs
+          </a>{" "}
+          — QCOW2 creation and overwrite protection.
+        </li>
+        <li>
+          <a
             href={sourceUrl("src-tauri/src/state.rs")}
             rel="noreferrer"
             target="_blank"
           >
             state.rs
           </a>{" "}
-          — application data initialization.
+          — application data initialization and shutdown.
         </li>
       </ul>
 

@@ -6,7 +6,11 @@ import StatusBadge from "./StatusBadge";
 import s from "./landing.module.css";
 
 const availableFeatures = featureGroups.find((group) => group.status === "available")?.items ?? [];
-const previewPhases = roadmapPhases.slice(0, 4);
+const featuredFeatureIds = ["vm-definitions", "qemu-lifecycle", "graphical-console"];
+const previewFeatures = featuredFeatureIds
+  .map((id) => availableFeatures.find((feature) => feature.id === id))
+  .filter((feature) => feature !== undefined);
+const previewPhases = roadmapPhases.slice(0, 6);
 
 const docCards = [
   {
@@ -18,7 +22,7 @@ const docCards = [
   {
     number: "02",
     title: "Architecture",
-    description: "How the Tauri shell, Rust backend, QEMU discovery, and local storage fit together.",
+    description: "How the Tauri shell, Rust backend, QEMU lifecycle, QMP, and local storage fit together.",
     href: "/docs/architecture",
   },
   {
@@ -35,21 +39,21 @@ export function StatusSnapshot() {
       <div className={`${s.wrap} ${s.statusLayout}`}>
         <div className={s.statusIntro}>
           <p className={s.kicker}>Current status</p>
-          <h2 id="current-status-title">A real foundation. Not a finished VM manager.</h2>
+          <h2 id="current-status-title">A real lifecycle. Not a finished VM manager.</h2>
           <p>
-            The desktop shell, host diagnostics, QEMU discovery, Linux KVM check, and
-            local configuration are implemented. VM creation and runtime control are
-            still ahead.
+            The desktop shell, host diagnostics, machine definitions, QCOW2 disks, QEMU
+            start and stop, QMP control, and a loopback noVNC console are implemented.
+            Guest installation and networking are still ahead.
           </p>
         </div>
 
         <div className={s.statusCards}>
           <div className={s.statusCard}>
-            <span className={s.statusCardLabel}>Foundation</span>
+            <span className={s.statusCardLabel}>Current milestone</span>
             <strong className={s.statusCardValue}>{currentStage.title}</strong>
             <p className={s.statusCardText}>
-              Host readiness and persistence are working. The code is public and
-              inspectable.
+              Machines can be created, started, stopped, and opened in a genuine guest
+              console. The code is public and inspectable.
             </p>
             <Link className={s.statusCardLink} href="/roadmap">
               See what is complete <span aria-hidden="true">→</span>
@@ -58,12 +62,12 @@ export function StatusSnapshot() {
 
           <div className={s.statusCard}>
             <span className={s.statusCardLabel}>Next milestone</span>
-            <strong className={s.statusCardValue}>VM definitions and disks</strong>
+            <strong className={s.statusCardValue}>Installation media and networking</strong>
             <p className={s.statusCardText}>
-              Planned, not started. No VM definition model or disk creation code exists
-              yet.
+              Planned, not started. The current build cannot install a guest operating
+              system or configure guest networking.
             </p>
-            <Link className={s.statusCardLink} href="/roadmap#vm-definitions">
+            <Link className={s.statusCardLink} href="/roadmap#media-networking">
               Inspect the next phase <span aria-hidden="true">→</span>
             </Link>
           </div>
@@ -73,7 +77,7 @@ export function StatusSnapshot() {
             <strong className={s.statusCardValue}>No public download</strong>
             <p className={s.statusCardText}>
               There are no release artifacts or installers. Build from source to inspect
-              the current foundation.
+              the current lifecycle.
             </p>
             <Link className={s.statusCardLink} href="/install">
               Build from source <span aria-hidden="true">→</span>
@@ -92,14 +96,14 @@ export function FeaturePreview() {
         <div className={s.sectionHeader}>
           <p className={s.kicker}>Available now</p>
           <h2 id="available-features-title">
-            Real foundations. <span>No mock controls.</span>
+            Real machines. <span>No mock controls.</span>
           </h2>
         </div>
 
         <div className={s.featureIntro}>
           <p>
-            The current build detects host capabilities and local tools. It does not
-            pretend to create or run virtual machines.
+            The current build creates local machine definitions, QCOW2 disks, and real
+            QEMU processes. A running machine can be opened in its actual guest console.
           </p>
           <Link className={s.textLink} href="/features">
             See all features <span aria-hidden="true">→</span>
@@ -107,7 +111,7 @@ export function FeaturePreview() {
         </div>
 
         <ul className={s.featureList}>
-          {availableFeatures.slice(0, 3).map((feature, index) => (
+          {previewFeatures.map((feature, index) => (
             <li key={feature.id}>
               <span aria-hidden="true" className={s.featureGlyph}>
                 {["▣", "⌁", "◇"][index]}
@@ -135,11 +139,12 @@ export function RoadmapPreview() {
         <div className={s.roadmapPreviewCopy}>
           <p className={s.kicker}>Roadmap</p>
           <h2 id="roadmap-preview-title">
-            The path to a <span>working machine.</span>
+            The path to a <span>complete machine.</span>
           </h2>
           <p>
-            The foundation and host checks are complete. VM definitions, QEMU lifecycle,
-            installation media, and the graphical console are still ahead.
+            The foundation, host checks, VM lifecycle, and graphical console are
+            implemented. Guest installation media, networking, and packaging are still
+            ahead.
           </p>
           <Link className={s.textLink} href="/roadmap">
             See the full roadmap <span aria-hidden="true">→</span>

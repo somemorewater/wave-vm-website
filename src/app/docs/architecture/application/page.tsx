@@ -17,7 +17,8 @@ export default function ApplicationBoundariesPage() {
       <p>
         The application has two explicit sides: a static frontend served by Tauri and a
         Rust backend exposed through narrowly scoped commands. The backend is
-        authoritative for host detection and persistence.
+        authoritative for host detection, VM validation, persistence, disk creation, and
+        process lifecycle.
       </p>
 
       <h2>Tauri shell</h2>
@@ -28,7 +29,7 @@ export default function ApplicationBoundariesPage() {
       </p>
 
       <h2>Command surface</h2>
-      <p>The current invoke handler registers exactly two commands:</p>
+      <p>The current invoke handler registers seven commands:</p>
       <ul>
         <li>
           <code>get_app_info</code> — returns the application name, version, data
@@ -38,33 +39,53 @@ export default function ApplicationBoundariesPage() {
           <code>detect_host</code> — runs host diagnostics on a blocking worker thread and
           returns the structured host result.
         </li>
+        <li>
+          <code>list_vms</code> — returns saved machine summaries and reconciles runtime
+          state.
+        </li>
+        <li>
+          <code>create_vm</code> — validates input, creates a QCOW2 disk, and persists a
+          machine definition.
+        </li>
+        <li>
+          <code>start_vm</code> — launches QEMU and records the running state after QMP
+          confirms it.
+        </li>
+        <li>
+          <code>stop_vm</code> — stops QEMU through QMP with termination fallbacks.
+        </li>
+        <li>
+          <code>get_vm_console</code> — returns the loopback WebSocket URL and per-run
+          password for a running machine.
+        </li>
       </ul>
       <p>
         The frontend calls these through <code>window.__TAURI__.core.invoke</code> from{" "}
-        <code>src/js/api.js</code>. There is no VM command, process command, filesystem
-        command, or arbitrary QEMU argument command.
+        <code>src/services/tauri.js</code> and the service wrappers. There is no
+        arbitrary filesystem command, arbitrary QEMU argument command, media command, or
+        networking command.
       </p>
 
       <h2>Frontend boundary</h2>
       <p>
-        The frontend is static and has no bundler. It renders loading, error, and
-        host-readiness states and refreshes the diagnostics. It does not read files or
-        start processes directly. Host data is rendered as structured values rather than
-        trusted HTML.
+        The frontend is static and has no bundler. It renders loading, error, machine, and
+        console states and calls the backend through the registered commands. It does not
+        read files or start processes directly. Host and machine data are rendered as
+        structured values rather than trusted HTML.
       </p>
 
       <h2>Capabilities and CSP</h2>
       <p>
         The capability set is minimal and scoped to the main window. The Content Security
         Policy restricts scripts, styles, images, fonts, and connections to local
-        application resources and the Tauri IPC endpoint. Remote web content is not loaded
-        into a privileged window.
+        application resources, the Tauri IPC endpoint, and loopback WebSocket connections
+        for the console. Remote web content is not loaded into a privileged window.
       </p>
 
-      <DocNote title="Future commands are not present" tone="planned">
-        VM creation, disk creation, QEMU launch, QMP control, and console commands do not
-        exist. The command surface will need to grow carefully as those features are
-        implemented.
+      <DocNote title="The command surface is still narrow" tone="info">
+        The current commands cover the implemented lifecycle. Media, networking, machine
+        editing, reset, and snapshot operations do not have commands. The surface will
+        need to grow carefully as those features are implemented.
       </DocNote>
 
       <h2>Source references</h2>
@@ -77,23 +98,19 @@ export default function ApplicationBoundariesPage() {
         </li>
         <li>
           <a
-            href={sourceUrl("src-tauri/src/commands/app.rs")}
+            href={sourceUrl("src-tauri/src/commands/vm.rs")}
             rel="noreferrer"
             target="_blank"
           >
-            commands/app.rs
+            commands/vm.rs
           </a>{" "}
-          — application information.
+          — VM creation, lifecycle, and console commands.
         </li>
         <li>
-          <a
-            href={sourceUrl("src-tauri/src/commands/host.rs")}
-            rel="noreferrer"
-            target="_blank"
-          >
-            commands/host.rs
+          <a href={sourceUrl("src/app.js")} rel="noreferrer" target="_blank">
+            src/app.js
           </a>{" "}
-          — host diagnostics command.
+          — frontend bootstrap and routing.
         </li>
         <li>
           <a

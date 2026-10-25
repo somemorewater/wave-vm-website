@@ -14,9 +14,10 @@ export default function HostCapabilitiesPage() {
   return (
     <DocPage href="/docs/user-guide/host-capabilities">
       <p>
-        The current interface is a host-readiness dashboard. It reports what the
-        application could observe about the host. It does not prove that a virtual machine
-        can run, because VM creation and QEMU lifecycle control are not implemented.
+        The interface reports what the application can observe about the host and gates
+        machine creation and lifecycle operations on those results. A complete diagnostic
+        still does not guarantee that a particular guest will boot or that the guest
+        operating system is installed.
       </p>
 
       <h2>Readiness summary</h2>
@@ -35,8 +36,9 @@ export default function HostCapabilitiesPage() {
         </li>
       </ul>
       <p>
-        These labels describe the diagnostics only. A complete diagnostic does not mean
-        that VM lifecycle support exists.
+        These labels describe the diagnostics only. They do not confirm that a guest
+        operating system is installed, that networking exists, or that a particular guest
+        configuration will run successfully.
       </p>
 
       <h2>System</h2>
@@ -138,10 +140,11 @@ export default function HostCapabilitiesPage() {
 
       <h2>What the diagnostics do not mean</h2>
       <p>
-        The panel does not prove that QEMU is compatible with a future Wave VM lifecycle,
-        that a VM will start, or that KVM can be used by a particular configuration. Those
-        checks require the process, QMP, and lifecycle implementation that is still{" "}
-        <Link href="/docs/user-guide/lifecycle">planned</Link>.
+        The panel does not prove that a particular guest will boot, that the guest
+        operating system is installed, or that KVM will be usable by every configuration.
+        The current lifecycle uses these checks when creating and starting a machine; read{" "}
+        <Link href="/docs/user-guide/lifecycle">Machine lifecycle</Link> for what happens
+        after QEMU launches.
       </p>
     </DocPage>
   );

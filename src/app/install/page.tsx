@@ -8,7 +8,7 @@ import ui from "@/components/ui.module.css";
 export const metadata: Metadata = {
   title: "Install & build",
   description:
-    "Wave VM has no public download yet. Build the current desktop foundation from source and inspect its host diagnostics.",
+    "Wave VM has no public download yet. Build the current desktop lifecycle from source to create machines, QCOW2 disks, run QEMU, and open the loopback console.",
 };
 
 export default function InstallPage() {
@@ -16,12 +16,12 @@ export default function InstallPage() {
     <main id="main">
       <PageHero
         eyebrow="Install & build"
-        lede="Wave VM has no public release artifacts yet. You can build the current desktop foundation from source to inspect host diagnostics, QEMU discovery, Linux KVM verification, and local configuration."
+        lede="Wave VM has no public release artifacts yet. You can build the current desktop lifecycle from source to create machine definitions, QCOW2 disks, run QEMU, and open a loopback noVNC console."
         title={
           <>
             No download.
             <br />
-            <em>Build the foundation.</em>
+            <em>Build the lifecycle.</em>
           </>
         }
       >
@@ -54,15 +54,17 @@ export default function InstallPage() {
             </h2>
             <p className={ui.sectionLede} style={{ marginTop: "1rem" }}>
               The desktop application is a Tauri 2 project. The frontend is static; the
-              Rust backend owns host detection and persistence.
+              Rust backend owns host detection, VM persistence, disk creation, and the
+              QEMU process lifecycle.
             </p>
           </div>
 
           <div className={ui.prose}>
             <p>
               Install the prerequisites first. Rust, Node.js, npm, and the Tauri 2 Linux
-              system libraries are required. QEMU and a usable KVM device are optional for
-              the current shell, but they are needed for meaningful host readiness.
+              system libraries are required. QEMU and qemu-img are required for VM
+              operations; a usable KVM device is optional and enables hardware
+              acceleration.
             </p>
 
             <pre>
@@ -103,8 +105,8 @@ npm run dev`}</code>
               </h2>
             </div>
             <p className={ui.sectionLede}>
-              The current milestone is a foundation, not a usable virtual machine manager.
-              These lists describe the inspected build.
+              The current milestone implements a real VM lifecycle, but not a complete
+              virtual machine manager. These lists describe the inspected build.
             </p>
           </div>
 
@@ -112,26 +114,36 @@ npm run dev`}</code>
             <article className={ui.card}>
               <h3 className={ui.cardTitle}>Implemented</h3>
               <ul className={ui.cardList}>
-                <li>Desktop window and static frontend.</li>
+                <li>Desktop window and persistent multi-page frontend.</li>
                 <li>Host diagnostics and local data paths.</li>
                 <li>QEMU and qemu-img discovery with version probing.</li>
                 <li>Linux KVM verification through /dev/kvm.</li>
-                <li>Schema-v1 local configuration with atomic writes.</li>
+                <li>VM definitions with validated resources.</li>
+                <li>Thin-provisioned QCOW2 disk creation.</li>
+                <li>QEMU start and stop with QMP control.</li>
+                <li>Loopback noVNC guest console.</li>
+                <li>Schema-v2 local configuration with atomic writes.</li>
               </ul>
             </article>
             <article className={ui.card}>
               <h3 className={ui.cardTitle}>Not implemented</h3>
               <ul className={ui.cardList}>
-                <li>VM definitions or a creation interface.</li>
-                <li>Virtual disk creation or ISO selection.</li>
-                <li>QEMU launch, process supervision, or QMP control.</li>
-                <li>Networking or a graphical console.</li>
+                <li>Guest OS installation, ISO selection, or media attachment.</li>
+                <li>Guest networking.</li>
+                <li>Editing or deleting machine definitions.</li>
+                <li>Reset, pause, or snapshot controls.</li>
+                <li>Windows and macOS host support.</li>
                 <li>Public releases, installers, or checksums.</li>
               </ul>
             </article>
           </div>
 
           <p className={ui.sectionLede} style={{ marginTop: "1.5rem" }}>
+            The lifecycle currently requires a Linux x86_64 host and supports x86_64
+            guests only. A created disk is blank until an operating system is installed
+            in a future milestone.
+          </p>
+          <p className={ui.sectionLede} style={{ marginTop: "1rem" }}>
             If setup fails, see <Link href="/docs/getting-started/troubleshooting">Troubleshooting</Link>{" "}
             or the <Link href="/docs/getting-started/prerequisites">prerequisites</Link>.
           </p>

@@ -7,7 +7,7 @@ import DocPage from "@/components/DocPage";
 export const metadata: Metadata = {
   title: "Building from source",
   description:
-    "Clone, install, run, check, and build the current Wave VM desktop foundation from source.",
+    "Clone, install, run, check, and build the current Wave VM desktop lifecycle from source.",
 };
 
 export default function BuildingPage() {
@@ -16,7 +16,8 @@ export default function BuildingPage() {
       <p>
         The desktop application is a Tauri 2 project. The frontend is static and has no
         bundler; Tauri serves the files in <code>src/</code>. The Rust backend owns host
-        detection and persistence.
+        detection, VM validation, persistence, disk creation, and the QEMU process
+        lifecycle.
       </p>
 
       <h2>Clone and install</h2>
@@ -41,10 +42,10 @@ npm install`}</code>
         bridge.
       </p>
 
-      <DocNote title="QEMU is optional for the shell" tone="info">
-        The current build compiles and launches without QEMU. Host readiness will report
-        QEMU and qemu-img as missing, and KVM as unavailable if <code>/dev/kvm</code> is
-        not accessible. Those are expected diagnostics, not build failures.
+      <DocNote title="QEMU is required for VM operations" tone="info">
+        The shell compiles and launches without QEMU. Host readiness will report QEMU and
+        qemu-img as missing, and KVM as unavailable if <code>/dev/kvm</code> is not
+        accessible. Creating a disk or starting a machine requires QEMU and qemu-img.
       </DocNote>
 
       <h2>Checks</h2>
@@ -71,10 +72,18 @@ npx tauri build --no-bundle`}</code>
       <p>
         On first launch, the application resolves the platform application data
         directory from the bundle identifier <code>com.wavevm.desktop</code> and creates{" "}
-        <code>config.json</code> and a reserved <code>vms/</code> directory. The
-        configuration is schema-v1 and is written atomically. See{" "}
-        <Link href="/docs/architecture/storage">Storage and configuration</Link> for the
-        details and platform paths.
+        <code>config.json</code> and a <code>vms/</code> directory. The configuration is
+        schema version 2 and is written atomically. Each machine receives its own
+        directory:
+      </p>
+      <pre>
+        <code>{`vms/<machine-id>/
+  disk.qcow2   # blank QCOW2 virtual disk
+  qemu.log     # latest QEMU run log`}</code>
+      </pre>
+      <p>
+        See <Link href="/docs/architecture/storage">Storage and configuration</Link> for
+        the details and platform paths.
       </p>
 
       <h2>Next</h2>
@@ -82,7 +91,7 @@ npx tauri build --no-bundle`}</code>
         If the build fails, see{" "}
         <Link href="/docs/getting-started/troubleshooting">Troubleshooting</Link>. To
         understand the current interface, read{" "}
-        <Link href="/docs/user-guide/host-capabilities">Host capabilities</Link>.
+        <Link href="/docs/user-guide">the user guide</Link>.
       </p>
     </DocPage>
   );

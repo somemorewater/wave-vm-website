@@ -25,10 +25,10 @@ export default function EnvironmentPage() {
         <li>Node.js 20 or newer and npm.</li>
         <li>Tauri 2 Linux prerequisites: WebKitGTK 4.1, GTK 3, and libsoup 3.</li>
       </ul>
-      <p>Optional for the current foundation:</p>
+      <p>Required for VM operations:</p>
       <ul>
-        <li>QEMU and qemu-img.</li>
-        <li>An accessible Linux KVM device at /dev/kvm.</li>
+        <li>QEMU and qemu-img. The shell can start without them, but machines cannot be created or started.</li>
+        <li>An accessible Linux KVM device at /dev/kvm is optional; without it, QEMU uses software emulation.</li>
       </ul>
       <pre>
         <code>{`git clone https://github.com/somemorewater/waveVM.git

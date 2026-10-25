@@ -5,8 +5,8 @@ development.
 
 The site is a multi-page Next.js App Router project. It describes the project,
 separates implemented capabilities from planned work, and documents the current
-desktop foundation. It is not a download site: no public release artifacts
-exist yet.
+desktop VM lifecycle and console. It is not a download site: no public release
+artifacts exist yet.
 
 ## Pages
 
@@ -15,7 +15,7 @@ exist yet.
 - `/roadmap` — milestone timeline with source evidence and explicit statuses
 - `/docs` — documentation with sidebar navigation, breadcrumbs, and previous/next links
 - `/about` — project principles, technology choices, and licensing status
-- `/install` — build the current foundation from source
+- `/install` — build the current VM lifecycle from source
 - `/docs/getting-started`, `/docs/user-guide`, `/docs/architecture`, `/docs/development` — documentation sections
 
 ## Tech stack

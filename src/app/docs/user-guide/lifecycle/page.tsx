@@ -7,45 +7,68 @@ import DocPage from "@/components/DocPage";
 export const metadata: Metadata = {
   title: "Machine lifecycle",
   description:
-    "Wave VM QEMU launch, process supervision, and QMP lifecycle control are planned. No VM can be started today.",
+    "Wave VM starts and stops a real QEMU process through QMP, with KVM or TCG acceleration and bounded termination fallbacks.",
 };
 
 export default function LifecyclePage() {
   return (
     <DocPage href="/docs/user-guide/lifecycle">
-      <DocNote title="Planned — not implemented" tone="planned">
-        The current build cannot start, stop, reset, or inspect a running virtual machine.
-        There is no QEMU launch code, process supervisor, QMP client, or lifecycle
-        command. Do not expect Start or Stop controls in the interface.
-      </DocNote>
-
       <p>
-        QEMU discovery and version probing are implemented. That is not lifecycle control.
-        The application can report where an executable was found; it cannot run a VM.
+        The current build starts and stops real QEMU processes. A machine is shown as
+        running only while its QEMU process is alive. The lifecycle currently requires a
+        Linux x86_64 host and x86_64 guests.
       </p>
 
-      <h2>What exists today</h2>
+      <h2>Start</h2>
+      <p>
+        Start validates that the recorded disk still exists and is inside the Wave VM data
+        directory, confirms QEMU is available, and refuses a duplicate launch when a live
+        QMP endpoint is already present. QEMU is launched with the configured memory,
+        virtual CPUs, and QCOW2 disk.
+      </p>
       <ul>
-        <li>QEMU system emulator discovery for the host architecture.</li>
-        <li>Version probing with a five-second timeout.</li>
-        <li>Linux KVM verification.</li>
-        <li>No QEMU argument construction, process launch, supervision, or QMP transport.</li>
+        <li>KVM is used when the /dev/kvm probe succeeds.</li>
+        <li>If KVM is unavailable or the KVM attempt fails, QEMU is retried with TCG software emulation.</li>
+        <li>QEMU starts with no guest network device.</li>
+        <li>The QMP control socket is a private Unix domain socket in the machine directory.</li>
+        <li>A running state is persisted only after QMP reports that QEMU is running.</li>
       </ul>
 
-      <h2>What the milestone must cover</h2>
+      <h2>Stop</h2>
+      <p>
+        Stop sends <code>system_powerdown</code> through QMP and waits for QEMU to exit.
+        If it does not exit within the timeout, Wave VM sends a QMP <code>quit</code>,
+        then SIGTERM, and finally a forced kill if necessary. The QMP socket is removed
+        after the process exits.
+      </p>
+
+      <h2>Process tracking</h2>
       <ul>
-        <li>Build QEMU arguments through typed vectors, never shell command strings.</li>
-        <li>Supervise the QEMU process and verify runtime state instead of assuming success.</li>
-        <li>Connect to QMP for supported start, stop, reset, and status operations.</li>
-        <li>Handle launch failures, timeouts, unexpected exits, and stale runtime resources.</li>
-        <li>Bind QMP to a local interface and avoid unauthenticated control.</li>
-        <li>Never claim a VM is running without evidence from the process and runtime state.</li>
+        <li>The child process is tracked in application state while the desktop app is running.</li>
+        <li>Unexpected exits are detected through polling and reflected in the persisted state.</li>
+        <li>Persisted starting, running, or stopping states are reconciled when the application starts.</li>
+        <li>QEMU stdout and stderr are written to <code>vms/&lt;machine-id&gt;/qemu.log</code>.</li>
+      </ul>
+
+      <DocNote title="Cleanup after a force-kill is not guaranteed" tone="warning">
+        Normal application exit stops tracked QEMU processes. If the desktop process is
+        force-killed, an already running QEMU child may survive. Wave VM will block a
+        duplicate launch while it can detect a live QMP endpoint, but it cannot guarantee
+        recovery from every orphaned process.
+      </DocNote>
+
+      <h2>Not implemented</h2>
+      <ul>
+        <li>Reset, pause, resume, or snapshot operations.</li>
+        <li>Guest networking, port forwarding, or USB passthrough.</li>
+        <li>Installing a guest operating system or attaching installation media.</li>
+        <li>Automatic recovery of an orphaned QEMU process after a desktop crash.</li>
       </ul>
 
       <p>
-        The lifecycle milestone depends on VM definitions and disk storage. See{" "}
-        <Link href="/roadmap#qemu-lifecycle">QEMU launch and QMP lifecycle</Link> in the
-        roadmap.
+        See <Link href="/docs/user-guide/console">Graphical console</Link> for the running
+        guest display and <Link href="/roadmap#qemu-lifecycle">the roadmap</Link> for the
+        implementation evidence.
       </p>
     </DocPage>
   );

@@ -7,45 +7,61 @@ import DocPage from "@/components/DocPage";
 export const metadata: Metadata = {
   title: "Disks and installation media",
   description:
-    "Wave VM virtual disk creation and local ISO selection are planned. Managed image downloads are under consideration. Only qemu-img discovery exists.",
+    "Wave VM creates blank QCOW2 disks today. ISO selection, installation media, and guest OS installation are planned.",
 };
 
 export default function DisksAndMediaPage() {
   return (
     <DocPage href="/docs/user-guide/disks-and-media">
-      <DocNote title="Planned — not implemented" tone="planned">
-        The current build does not create virtual disks, select ISO images, download
-        images, or verify checksums or signatures. The only related implementation is
-        discovery and version probing of the <code>qemu-img</code> executable.
+      <DocNote title="Disk creation exists; media does not" tone="planned">
+        The current build creates a blank QCOW2 disk for each machine. It does not select
+        ISO images, download images, verify checksums or signatures, attach installation
+        media, or install a guest operating system.
       </DocNote>
 
       <p>
-        A VM lifecycle needs explicit storage and installation media. Both are planned.
-        There is no workflow to document yet.
+        The VM lifecycle has local disk storage but no installation-media workflow. The
+        two areas are documented together because they are both required before a machine
+        can boot an installed guest.
       </p>
 
-      <h2>What exists today</h2>
+      <h2>Virtual disks today</h2>
       <ul>
-        <li>QEMU and qemu-img discovery through bundled resources, PATH, and standard locations.</li>
-        <li>Version probing with a five-second timeout.</li>
-        <li>Host storage diagnostics for the application data filesystem.</li>
-        <li>No disk creation, ISO selection, media catalogue, download, or verification code.</li>
+        <li>Each machine definition records a disk path and size.</li>
+        <li>qemu-img creates a thin-provisioned QCOW2 image under <code>vms/&lt;machine-id&gt;/disk.qcow2</code>.</li>
+        <li>Existing disk files are never overwritten.</li>
+        <li>On Unix, the disk file is restricted to 0600 and the machine directory to 0700.</li>
+        <li>The Storage page provides a read-only inventory of disks recorded in machine definitions.</li>
+        <li>A missing disk is reported and prevents the machine from starting.</li>
       </ul>
 
-      <h2>What the milestone must cover</h2>
+      <h2>Storage limits</h2>
+      <p>
+        Disk size is validated between 1 and 1,024 GiB and against the free space reported
+        on the application data filesystem. These are current implementation limits, not
+        guarantees about guest capacity or performance.
+      </p>
+
+      <h2>Not implemented</h2>
       <ul>
-        <li>Use qemu-img through safely constructed arguments, never shell strings.</li>
-        <li>Choose explicit disk formats and validate configuration.</li>
-        <li>Refuse to overwrite existing disk images or user data.</li>
-        <li>Canonicalize and validate user-selected paths.</li>
-        <li>Verify selected media when reliable checksum or signature data exists.</li>
-        <li>Keep guest operating system images out of the application installer.</li>
+        <li>Resizing, deleting, or compacting virtual disks.</li>
+        <li>Attaching an existing disk to a machine.</li>
+        <li>Inspecting disk usage inside the guest.</li>
+        <li>Selecting local ISO images or attaching boot media.</li>
+        <li>Downloading operating system images or maintaining a media catalogue.</li>
+        <li>Verifying checksums or signatures.</li>
+        <li>Installing a guest operating system.</li>
       </ul>
+
+      <DocNote title="No guest images are bundled" tone="info">
+        Wave VM will not include complete guest operating system images in the installer.
+        Managed downloads and a catalogue remain under consideration, not scheduled work.
+      </DocNote>
 
       <p>
-        See <Link href="/roadmap#media-networking">local installation media and networking</Link>{" "}
-        in the roadmap. Managed image downloads and a catalogue are under consideration,
-        not scheduled. No download source or checksum is published by this website.
+        See <Link href="/roadmap#media-networking">guest installation media and networking</Link>{" "}
+        in the roadmap. The current QEMU launch does not attach an ISO or expose a guest
+        network device.
       </p>
     </DocPage>
   );

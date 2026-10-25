@@ -49,22 +49,22 @@ const technology = [
   },
   {
     title: "QEMU integration",
-    description: "Discovery and version probing exist; launch and lifecycle control do not.",
-    status: "in-development" as const,
+    description: "Discovery, QCOW2 disk creation, launch, and start/stop lifecycle control.",
+    status: "available" as const,
   },
   {
     title: "QMP control",
-    description: "Planned runtime control for supported lifecycle operations.",
-    status: "planned" as const,
+    description: "Private Unix-socket control for the implemented start and stop path.",
+    status: "available" as const,
   },
   {
     title: "VNC and noVNC console",
-    description: "Planned genuine interactive graphical console.",
-    status: "planned" as const,
+    description: "Loopback-only guest display through QEMU WebSocket VNC and noVNC.",
+    status: "available" as const,
   },
   {
     title: "Versioned JSON configuration",
-    description: "Schema-v1 config.json with atomic writes and restrictive permissions.",
+    description: "Schema-v2 config.json with VM definitions, atomic writes, and restrictive permissions.",
     status: "available" as const,
   },
 ];

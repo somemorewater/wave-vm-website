@@ -45,7 +45,7 @@ export const docSections: DocSection[] = [
   {
     title: "User Guide",
     href: "/docs/user-guide",
-    description: "The current host-readiness interface and the VM workflows that are still planned.",
+    description: "The current VM workflow, host readiness, lifecycle controls, and known limits.",
     pages: [
       {
         title: "User Guide",
@@ -60,33 +60,33 @@ export const docSections: DocSection[] = [
       {
         title: "Virtual machines",
         href: "/docs/user-guide/virtual-machines",
-        description: "Planned VM definitions and creation workflow.",
-        status: "planned",
+        description: "Create a local machine definition and inspect its configuration.",
+        status: "available",
       },
       {
         title: "Disks and installation media",
         href: "/docs/user-guide/disks-and-media",
-        description: "Planned disk creation, ISO selection, and media verification.",
-        status: "planned",
+        description: "QCOW2 disk creation, missing media support, and planned ISO handling.",
+        status: "in-development",
       },
       {
         title: "Machine lifecycle",
         href: "/docs/user-guide/lifecycle",
-        description: "Planned start, stop, reset, and QMP-based runtime control.",
-        status: "planned",
+        description: "Start and stop a real QEMU process through QMP.",
+        status: "available",
       },
       {
         title: "Graphical console",
         href: "/docs/user-guide/console",
-        description: "Planned interactive VNC console through noVNC.",
-        status: "planned",
+        description: "Connect to the running guest through loopback VNC and noVNC.",
+        status: "available",
       },
     ],
   },
   {
     title: "Architecture",
     href: "/docs/architecture",
-    description: "How the current Tauri, Rust, QEMU discovery, and storage layers fit together.",
+    description: "How the Tauri shell, Rust backend, QEMU lifecycle, QMP, and storage layers fit together.",
     pages: [
       {
         title: "Architecture",
@@ -101,17 +101,17 @@ export const docSections: DocSection[] = [
       {
         title: "Virtualization integration",
         href: "/docs/architecture/virtualization",
-        description: "QEMU discovery, probing, Linux KVM checks, and what is still missing.",
+        description: "QEMU discovery, launch, QMP lifecycle, Linux KVM, and the console transport.",
       },
       {
         title: "Storage and configuration",
         href: "/docs/architecture/storage",
-        description: "Application data, schema-v1 config.json, atomic writes, and permissions.",
+        description: "Application data, schema-v2 config.json, VM disks, atomic writes, and permissions.",
       },
       {
         title: "Security model",
         href: "/docs/architecture/security",
-        description: "Current protections, local-only boundaries, and future console requirements.",
+        description: "Current protections, local-only control boundaries, and console authentication.",
       },
     ],
   },

@@ -8,16 +8,16 @@ import { sourceUrl } from "@/config";
 export const metadata: Metadata = {
   title: "Security model",
   description:
-    "Wave VM's current local-only security boundaries, restrictive permissions, Content Security Policy, and future QMP and console requirements.",
+    "Wave VM's current local-only security boundaries, QMP and console protections, restrictive permissions, and known limitations.",
 };
 
 export default function SecurityPage() {
   return (
     <DocPage href="/docs/architecture/security">
       <p>
-        The current security model is small because the current feature surface is small.
-        Wave VM runs as the current user, does not require root, and does not expose a
-        virtualization control service.
+        Wave VM runs as the current user, does not require root, and keeps virtualization
+        control interfaces local. The current build starts real QEMU processes, so the
+        security model now includes process control and a guest display transport.
       </p>
 
       <h2>Current protections</h2>
@@ -27,42 +27,46 @@ export default function SecurityPage() {
         <li>A restrictive Content Security Policy in the Tauri configuration.</li>
         <li>A minimal capability set scoped to the main window.</li>
         <li>No remote web content loaded into the privileged application window.</li>
-        <li>Application directories created with 0700 permissions and configuration written with 0600 on Unix.</li>
-        <li>No account credentials or console passwords stored by the current build.</li>
+        <li>Application and machine directories use 0700 permissions; configuration and disks use 0600 on Unix.</li>
+        <li>QMP uses a private Unix domain socket in the machine directory.</li>
+        <li>QEMU VNC is bound to 127.0.0.1 and exposed over WebSocket only on loopback.</li>
+        <li>The console password is generated per run and kept in memory, not in VM configuration.</li>
+        <li>QEMU is launched with no guest network device.</li>
       </ul>
 
-      <h2>What is not exposed yet</h2>
+      <h2>Local control boundary</h2>
       <p>
-        There is no QMP listener, VNC server, noVNC client, VM network, or process control
-        command. That means there is no virtualization control interface to expose. It also
-        means the security requirements for those interfaces have not been implemented or
-        tested.
+        The Content Security Policy permits WebSocket connections only to{" "}
+        <code>127.0.0.1</code>. QMP is not a public endpoint, and the VNC listener is not
+        reachable from another host through Wave VM&apos;s configuration. The console is a
+        local display feature, not a remote access service.
       </p>
 
-      <DocNote title="Future control interfaces must be local and authenticated" tone="planned">
-        QMP and VNC must bind to appropriate local interfaces only. Console access must use
-        session authentication, and console passwords must not be stored as persistent VM
-        configuration. These are requirements for future work, not claims about the
-        current build.
+      <DocNote title="This is not a security audit" tone="warning">
+        The protections above are implementation choices, not proof that the application
+        is free of vulnerabilities. No independent security audit has been completed.
       </DocNote>
 
       <h2>Input and data handling</h2>
       <p>
-        Imported disk images and ISO files must be treated as untrusted inputs. Future
-        code must validate user-controlled paths, avoid shell invocation, construct QEMU
-        arguments as vectors, and refuse to overwrite existing disk images or user data.
+        Machine names, resources, and disk sizes are validated in Rust. Disk paths are
+        checked to remain inside the Wave VM data directory before launch. QEMU arguments
+        are constructed as vectors, not shell strings. Existing disks are never
+        overwritten.
       </p>
       <p>
-        The current configuration loader validates the schema version and parses typed
-        values. It does not yet validate VM definitions because they do not exist.
+        Imported disk images and ISO files are not supported yet. When media support is
+        added, imported files must be treated as untrusted inputs and verified where
+        reliable data exists.
       </p>
 
       <h2>Known limitations</h2>
       <ul>
         <li>No security audit has been performed.</li>
         <li>No release artifacts or update mechanism exist.</li>
-        <li>QMP, VNC, networking, and process supervision are not implemented.</li>
-        <li>Windows and macOS security behavior has not been verified.</li>
+        <li>Guest installation media, networking, USB passthrough, snapshots, and machine editing are not implemented.</li>
+        <li>Cleanup after a force-killed desktop process is not guaranteed for an already running QEMU child.</li>
+        <li>Linux x86_64 is the only exercised host; Windows and macOS security behavior has not been verified.</li>
       </ul>
 
       <h2>Source references</h2>
@@ -86,6 +90,16 @@ export default function SecurityPage() {
             capabilities/default.json
           </a>{" "}
           — capability scope.
+        </li>
+        <li>
+          <a
+            href={sourceUrl("src-tauri/src/vm/runtime.rs")}
+            rel="noreferrer"
+            target="_blank"
+          >
+            vm/runtime.rs
+          </a>{" "}
+          — QMP, console binding, password generation, and process termination.
         </li>
         <li>
           <a

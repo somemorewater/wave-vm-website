@@ -16,7 +16,7 @@ import ui from "@/components/ui.module.css";
 export const metadata: Metadata = {
   title: "Roadmap",
   description:
-    "Wave VM's development roadmap, current milestone, completed foundation work, and planned virtual machine lifecycle features.",
+    "Wave VM's development roadmap, implemented VM lifecycle and console, and planned guest installation, networking, and packaging work.",
 };
 
 export default function RoadmapPage() {
@@ -24,12 +24,12 @@ export default function RoadmapPage() {
     <main id="main">
       <PageHero
         eyebrow="Roadmap"
-        lede="The development path from a working desktop foundation to a verified virtual machine lifecycle and graphical console. Statuses reflect the inspected repository, not a schedule."
+        lede="The development path from a working desktop foundation to a complete virtual machine manager. Statuses reflect the inspected repository, not a schedule."
         title={
           <>
             The path to a
             <br />
-            <em>working machine.</em>
+            <em>complete machine.</em>
           </>
         }
       >

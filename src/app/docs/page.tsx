@@ -17,10 +17,11 @@ export default function DocsHomePage() {
         </p>
       </header>
 
-      <DocNote title="Current build: Milestone 1A" tone="info">
-        Host diagnostics, QEMU discovery, Linux KVM verification, and local configuration
-        are implemented. VM creation, disks, QMP lifecycle, networking, and the graphical
-        console are not. See <Link href="/roadmap">the roadmap</Link> for the full status.
+      <DocNote title="Current build: Milestone 2" tone="info">
+        Host diagnostics, machine definitions, QCOW2 disks, QEMU start and stop, QMP
+        control, and a loopback noVNC console are implemented. Guest installation media,
+        networking, machine editing, and release packaging are not. See{" "}
+        <Link href="/roadmap">the roadmap</Link> for the full status.
       </DocNote>
 
       <div className={docs.docsSectionGrid}>
@@ -51,7 +52,7 @@ export default function DocsHomePage() {
           </li>
           <li>
             <Link href="/docs/architecture">Architecture</Link> — the Tauri shell, Rust
-            backend, QEMU discovery, storage, and security boundaries.
+            backend, QEMU lifecycle, QMP, storage, and security boundaries.
           </li>
           <li>
             <Link href="/docs/development/checks">Build and checks</Link> — verified

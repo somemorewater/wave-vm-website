@@ -93,9 +93,10 @@ export default function FeaturesPage() {
 
       <div className={ui.wrap}>
         <div className={`${ui.notice} ${ui.noticeInfo}`} style={{ marginTop: "2rem" }}>
-          <strong>Current build:</strong> Milestone 1A. Host diagnostics, QEMU discovery,
-          Linux KVM verification, and local configuration are implemented. No virtual
-          machine can be created or started yet.
+          <strong>Current build:</strong> Milestone 2. Machine definitions, QCOW2 disks,
+          QEMU start and stop, QMP lifecycle control, and a loopback noVNC console are
+          implemented. Guest operating system installation, networking, and machine
+          editing are not.
         </div>
       </div>
 
