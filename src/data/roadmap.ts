@@ -1,4 +1,4 @@
-import { sourceUrl } from "@/config";
+import { sourceUrl, websiteRepoUrl } from "@/config";
 import type { Status } from "./status";
 
 export interface EvidenceLink {
@@ -252,16 +252,19 @@ export const roadmapPhases: RoadmapPhase[] = [
       "Make a release trustworthy, understandable, and maintainable for users and contributors.",
     status: "planned",
     summary:
-      "No release artifacts, checksums, or selected license exist. The project must not be described as production-ready.",
+      "No release artifacts or checksums exist. The project must not be described as production-ready.",
     details: [
-      "Select and add a license before claiming an open-source release.",
+      "Keep the MIT License and third-party notices accurate as dependencies and assets change.",
       "Complete user and contributor documentation for implemented workflows.",
       "Review accessibility, security, and failure handling.",
       "Prepare release notes, checksums, and support boundaries.",
       "Publish only artifacts that have actually been built and verified.",
     ],
     dependencies: ["Verified cross-platform packages", "Completed core VM lifecycle", "Documentation and security review"],
-    evidence: [{ label: "Desktop README license note", href: readme }],
+    evidence: [
+      { label: "Desktop LICENSE", href: sourceUrl("LICENSE") },
+      { label: "Website LICENSE", href: `${websiteRepoUrl}/blob/main/LICENSE` },
+    ],
   },
 ];
 
@@ -288,7 +291,7 @@ export const crossCuttingItems: CrossCuttingItem[] = [
     title: "Documentation and contributor onboarding",
     status: "in-progress",
     description:
-      "The desktop README and this documentation site now describe the implemented foundation and its limits. A CONTRIBUTING.md and a selected license do not exist yet.",
+      "The desktop README and this documentation site now describe the implemented foundation and its limits. The MIT License is included; a CONTRIBUTING.md does not exist yet.",
     evidence: [
       { label: "Desktop README", href: readme },
       { label: "Website repository", href: "https://github.com/somemorewater/wave-vm-website" },

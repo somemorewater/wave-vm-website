@@ -53,7 +53,7 @@ export default function DevelopmentPage() {
         </li>
         <li>
           <Link href="/docs/development/contributing">Contributing</Link> — engineering
-          expectations and the current licensing gap.
+          expectations, licensing, and how to discuss changes.
         </li>
         <li>
           <Link href="/docs/development/reporting">Reporting issues</Link> — where to

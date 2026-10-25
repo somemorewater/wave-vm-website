@@ -143,7 +143,7 @@ export const docSections: DocSection[] = [
       {
         title: "Contributing",
         href: "/docs/development/contributing",
-        description: "Scope, engineering rules, and the current licensing gap.",
+        description: "Scope, engineering rules, licensing, and how to discuss changes.",
       },
       {
         title: "Reporting issues",

@@ -52,8 +52,8 @@ export function OpenSource() {
           </p>
           <p>
             Wave VM is being developed in the open as a local-first project. The source
-            is public and can be inspected, but a license has not yet been selected.
-            Until one is added, do not assume open-source licensing terms.
+            is public under the MIT License, and third-party dependencies retain their
+            own licenses.
           </p>
           {githubUrl ? (
             <a className={s.textLink} href={githubUrl} rel="noreferrer" target="_blank">

@@ -60,7 +60,6 @@ export default function SecurityPage() {
       <h2>Known limitations</h2>
       <ul>
         <li>No security audit has been performed.</li>
-        <li>No license has been selected, which is a separate legal and distribution gap.</li>
         <li>No release artifacts or update mechanism exist.</li>
         <li>QMP, VNC, networking, and process supervision are not implemented.</li>
         <li>Windows and macOS security behavior has not been verified.</li>

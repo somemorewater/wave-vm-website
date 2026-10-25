@@ -92,3 +92,13 @@ The website must build without the desktop repository being present. Do not
 import desktop source files at build time, create symlinks across repositories,
 or add runtime dependencies on the desktop working tree. Brand assets are copied
 into each repository.
+
+## License
+
+Wave VM is released under the MIT License. See [`LICENSE`](LICENSE) for the full
+text.
+
+Copyright (c) 2026 Water.
+
+Third-party dependencies and any separately licensed assets retain their original
+licenses. The MIT License does not override those terms.

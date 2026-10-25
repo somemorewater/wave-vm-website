@@ -27,7 +27,7 @@ const principles = [
   },
   {
     title: "Open development",
-    text: "The source is public and development is documented. A license has not yet been selected, so open-source licensing terms are not yet in place.",
+    text: "The source is public under the MIT License and development is documented. Third-party dependencies retain their own licenses.",
   },
 ];
 
@@ -193,9 +193,9 @@ export default function AboutPage() {
               no published version that can be described as production-ready.
             </p>
             <p>
-              A license has not yet been selected. Until one is added, do not assume that
-              the source may be reused under open-source terms. The project is being
-              developed in the open, but the legal licensing decision is still pending.
+              Wave VM is released under the MIT License. Third-party dependencies and any
+              separately licensed assets retain their own licenses. The project is being
+              developed in the open, but it is not production-ready.
             </p>
             <p>
               Wave VM is not a cloud service, a libvirt wrapper, or a bundle of guest

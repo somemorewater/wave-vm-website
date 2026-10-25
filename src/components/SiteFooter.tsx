@@ -22,7 +22,7 @@ export default function SiteFooter() {
             </Link>
             <p className={styles.footerTagline}>
               A local-first desktop virtual machine manager in development. The source
-              is public; a license has not yet been selected.
+              is public under the MIT License.
             </p>
             <p className={styles.footerStatus}>In development · No public download</p>
           </div>

@@ -8,17 +8,16 @@ import { githubUrl, sourceUrl } from "@/config";
 export const metadata: Metadata = {
   title: "Contributing",
   description:
-    "Wave VM contribution expectations, current licensing gap, and how to discuss changes before implementation.",
+    "Wave VM contribution expectations, current licensing, and how to discuss changes before implementation.",
 };
 
 export default function ContributingPage() {
   return (
     <DocPage href="/docs/development/contributing">
-      <DocNote title="No CONTRIBUTING.md or license yet" tone="warning">
-        The inspected repositories do not contain a CONTRIBUTING.md or a selected license.
-        Use the issue tracker to discuss substantial changes before starting. Until a
-        license is added, do not assume that contributions or source reuse are governed by
-        open-source terms.
+      <DocNote title="No CONTRIBUTING.md yet" tone="warning">
+        The inspected repositories do not contain a CONTRIBUTING.md. Both include an MIT
+        License; third-party dependencies retain their own licenses. Use the issue tracker
+        to discuss substantial changes before starting.
       </DocNote>
 
       <p>
@@ -58,9 +57,9 @@ export default function ContributingPage() {
 
       <h2>Discuss first</h2>
       <p>
-        There is no contribution license agreement and no formal review process. Open an
-        issue in the relevant repository to discuss a bug or proposal before investing in a
-        large change.
+        There is no separate contributor license agreement and no formal review process.
+        Open an issue in the relevant repository to discuss a bug or proposal before
+        investing in a large change.
       </p>
       <p>
         {githubUrl ? (
