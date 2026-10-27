@@ -8,7 +8,7 @@ import ui from "@/components/ui.module.css";
 export const metadata: Metadata = {
   title: "Install & build",
   description:
-    "Wave VM has no public download yet. Build the current desktop lifecycle from source to create machines, QCOW2 disks, run QEMU, and open the loopback console.",
+    "Wave VM has no public download yet. Build the current desktop lifecycle from source to create machines, QCOW2 disks, boot local ISO installers, run QEMU, and open the loopback console.",
 };
 
 export default function InstallPage() {
@@ -16,7 +16,7 @@ export default function InstallPage() {
     <main id="main">
       <PageHero
         eyebrow="Install & build"
-        lede="Wave VM has no public release artifacts yet. You can build the current desktop lifecycle from source to create machine definitions, QCOW2 disks, run QEMU, and open a loopback noVNC console."
+        lede="Wave VM has no public release artifacts yet. You can build the current desktop lifecycle from source to create machine definitions, QCOW2 disks, boot a local ISO installer through QEMU, and open a loopback noVNC console."
         title={
           <>
             No download.
@@ -54,8 +54,8 @@ export default function InstallPage() {
             </h2>
             <p className={ui.sectionLede} style={{ marginTop: "1rem" }}>
               The desktop application is a Tauri 2 project. The frontend is static; the
-              Rust backend owns host detection, VM persistence, disk creation, and the
-              QEMU process lifecycle.
+              Rust backend owns host detection, VM persistence, disk creation,
+              installation-media validation, and the QEMU process lifecycle.
             </p>
           </div>
 
@@ -120,15 +120,16 @@ npm run dev`}</code>
                 <li>Linux KVM verification through /dev/kvm.</li>
                 <li>VM definitions with validated resources.</li>
                 <li>Thin-provisioned QCOW2 disk creation.</li>
+                <li>Local ISO selection and installer or disk boot modes.</li>
                 <li>QEMU start and stop with QMP control.</li>
-                <li>Loopback noVNC guest console.</li>
-                <li>Schema-v2 local configuration with atomic writes.</li>
+                <li>Loopback noVNC guest console with fullscreen and pointer capture.</li>
+                <li>Schema-v3 local configuration with atomic writes.</li>
               </ul>
             </article>
             <article className={ui.card}>
               <h3 className={ui.cardTitle}>Not implemented</h3>
               <ul className={ui.cardList}>
-                <li>Guest OS installation, ISO selection, or media attachment.</li>
+                <li>Image downloads, checksum or signature verification, or automatic installation detection.</li>
                 <li>Guest networking.</li>
                 <li>Editing or deleting machine definitions.</li>
                 <li>Reset, pause, or snapshot controls.</li>
@@ -140,8 +141,8 @@ npm run dev`}</code>
 
           <p className={ui.sectionLede} style={{ marginTop: "1.5rem" }}>
             The lifecycle currently requires a Linux x86_64 host and supports x86_64
-            guests only. A created disk is blank until an operating system is installed
-            in a future milestone.
+            guests only. A new disk is blank until you install an operating system from a
+            local ISO that you provide. No guest images are bundled.
           </p>
           <p className={ui.sectionLede} style={{ marginTop: "1rem" }}>
             If setup fails, see <Link href="/docs/getting-started/troubleshooting">Troubleshooting</Link>{" "}

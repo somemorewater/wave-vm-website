@@ -5,8 +5,8 @@ development.
 
 The site is a multi-page Next.js App Router project. It describes the project,
 separates implemented capabilities from planned work, and documents the current
-desktop VM lifecycle and console. It is not a download site: no public release
-artifacts exist yet.
+desktop VM lifecycle, local installation media, console controls, and limits. It is
+not a download site: no public release artifacts exist yet.
 
 ## Pages
 
@@ -16,7 +16,13 @@ artifacts exist yet.
 - `/docs` — documentation with sidebar navigation, breadcrumbs, and previous/next links
 - `/about` — project principles, technology choices, and licensing status
 - `/install` — build the current VM lifecycle from source
-- `/docs/getting-started`, `/docs/user-guide`, `/docs/architecture`, `/docs/development` — documentation sections
+- `/docs/getting-started` — status, prerequisites, build, and troubleshooting
+- `/docs/user-guide` — host capabilities, machines, installation media, lifecycle, console, and networking
+- `/docs/architecture` — application, virtualization, storage, and security boundaries
+- `/docs/development` — environment, repository layout, checks, contributing, and reporting
+
+The landing hero uses a labeled implementation map, not a fabricated product
+screenshot. No genuine application screenshots are currently published.
 
 ## Tech stack
 
@@ -71,6 +77,8 @@ not on intended features. Keep these data files authoritative:
 Roadmap and feature statuses should be updated at the data source rather than
 duplicated in page text. Do not add dates, percentages, release estimates,
 checksums, or download links unless the corresponding artifact actually exists.
+Do not present the implementation map as a screenshot or claim capabilities that
+are absent from the desktop repository.
 
 ## GitHub links
 

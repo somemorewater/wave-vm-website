@@ -17,10 +17,11 @@ export default function DocsHomePage() {
         </p>
       </header>
 
-      <DocNote title="Current build: Milestone 2" tone="info">
-        Host diagnostics, machine definitions, QCOW2 disks, QEMU start and stop, QMP
-        control, and a loopback noVNC console are implemented. Guest installation media,
-        networking, machine editing, and release packaging are not. See{" "}
+      <DocNote title="Current build: Milestone 4" tone="info">
+        Host diagnostics, machine definitions, QCOW2 disks, local ISO installation media,
+        installer and disk boot modes, QEMU start and stop, QMP control, and a loopback
+        noVNC console with fullscreen and mouse capture are implemented. Guest networking,
+        image verification, machine editing, snapshots, and release packaging are not. See{" "}
         <Link href="/roadmap">the roadmap</Link> for the full status.
       </DocNote>
 
@@ -47,8 +48,12 @@ export default function DocsHomePage() {
             expectations, prerequisites, and a source build.
           </li>
           <li>
-            <Link href="/docs/user-guide/host-capabilities">Host capabilities</Link> —
-            understand the diagnostics the current build actually shows.
+            <Link href="/docs/user-guide/disks-and-media">Disks and installation media</Link>{" "}
+            — create a disk, attach a local ISO, and switch between installer and disk boot.
+          </li>
+          <li>
+            <Link href="/docs/user-guide/networking">Networking</Link> — why the current
+            guest has no network interface and what virtual Ethernet would mean.
           </li>
           <li>
             <Link href="/docs/architecture">Architecture</Link> — the Tauri shell, Rust

@@ -7,22 +7,22 @@ import DocPage from "@/components/DocPage";
 export const metadata: Metadata = {
   title: "Getting Started",
   description:
-    "Wave VM project status, current VM lifecycle capabilities, and what to expect from the Milestone 2 desktop build.",
+    "Wave VM project status, the current Milestone 4 desktop capabilities, and what to expect from the local lifecycle.",
 };
 
 export default function GettingStartedPage() {
   return (
     <DocPage href="/docs/getting-started">
       <p>
-        Wave VM is a local-first desktop application for creating and managing virtual
-        machines. It is built with Tauri 2, a Rust backend, and a vanilla HTML, CSS, and
-        JavaScript frontend. Direct QEMU integration is the virtualization path; libvirt
-        is not a mandatory dependency.
+        Wave VM is a free, open-source desktop application for creating and managing
+        virtual machines locally. It is built with Tauri 2, a Rust backend, and a vanilla
+        HTML, CSS, and JavaScript frontend. Direct QEMU integration is the virtualization
+        path; libvirt is not a mandatory dependency.
       </p>
       <p>
         The project is in active development. The inspected repository is at{" "}
-        <strong>Milestone 2: First Real VM Lifecycle</strong>. It is not a complete virtual
-        machine manager yet, and there is no public download.
+        <strong>Milestone 4: Local ISO Installation Support</strong>. It is not a complete
+        virtual machine manager yet, and there is no public download.
       </p>
 
       <h2>Current status</h2>
@@ -33,32 +33,38 @@ export default function GettingStartedPage() {
         <li>QEMU and qemu-img discovery through bundled resources, PATH, and standard platform locations.</li>
         <li>QEMU version probing with a five-second timeout.</li>
         <li>Linux KVM verification by opening /dev/kvm and issuing KVM_GET_API_VERSION.</li>
-        <li>VM definitions with validated names, memory, virtual CPU counts, guest architecture, and disk size.</li>
+        <li>VM definitions with validated names, memory, virtual CPU counts, guest architecture, disk size, optional local ISO, and boot mode.</li>
         <li>Thin-provisioned QCOW2 disk creation with protection against overwriting existing disks.</li>
+        <li>Local ISO selection with Rust-side path and file validation. The ISO is never copied, modified, or deleted.</li>
+        <li>Installer boot that attaches the ISO as a read-only CD/DVD, and an explicit switch back to disk boot.</li>
         <li>QEMU launch with KVM when verified usable, or software emulation (TCG) as a fallback.</li>
         <li>Start and stop through a private QMP Unix socket, with process tracking and bounded termination fallbacks.</li>
         <li>A genuine guest console through QEMU WebSocket VNC and bundled noVNC, bound to loopback.</li>
-        <li>Schema-v2 local configuration with atomic writes and restrictive Unix permissions.</li>
+        <li>Fullscreen through F11 or the console controls, plus Pointer Lock mouse capture released with Esc.</li>
+        <li>Schema-v3 local configuration with atomic writes and restrictive Unix permissions.</li>
       </ul>
 
       <DocNote title="What this build is not" tone="planned">
-        The current build cannot install a guest operating system, select an ISO, attach
-        installation media, download images, configure networking, edit or delete a
-        machine, reset or pause it, take snapshots, or use USB passthrough. A configured
-        disk is blank until an operating system is installed in a later milestone.
+        The current build does not download or verify guest images, provide an online OS
+        catalogue, detect when installation has completed, configure guest networking,
+        edit or delete a machine, reset or pause it, take snapshots, or use USB
+        passthrough. A new disk remains blank until you install a guest from an ISO you
+        provide.
       </DocNote>
 
       <h2>What you can inspect today</h2>
       <p>
         Running the desktop application shows host readiness, saved machines, local
-        storage, and application settings. You can create a machine definition, create its
-        QCOW2 disk, start and stop a real QEMU process, and open the guest display while
-        the machine is running.
+        storage, installation media, and application settings. You can create a machine
+        definition and QCOW2 disk, optionally attach a local ISO, start a real QEMU
+        process, interact with the installer or installed guest, stop it, and switch the
+        next boot back to the virtual disk.
       </p>
       <p>
         The console is a real VNC connection to the running guest, not a screenshot or a
-        simulated terminal. Because no guest operating system is installed by this build,
-        a new machine may display only firmware output or a no-bootable-device message.
+        simulated terminal. With an installer ISO attached, it displays the actual guest
+        installer. Without installation media and without an installed guest, a new
+        machine may display only firmware output or a no-bootable-device message.
       </p>
       <p>
         The lifecycle currently requires a Linux x86_64 host and supports x86_64 guests
@@ -81,8 +87,16 @@ export default function GettingStartedPage() {
           for the implemented creation workflow.
         </li>
         <li>
-          See <Link href="/roadmap">the roadmap</Link> for the next planned milestone and
-          the evidence behind each status.
+          See <Link href="/docs/user-guide/disks-and-media">Disks and installation media</Link>{" "}
+          for local ISO attachment and boot modes.
+        </li>
+        <li>
+          Read <Link href="/docs/user-guide/networking">Networking</Link> to understand why
+          guests do not have a network interface yet.
+        </li>
+        <li>
+          See <Link href="/roadmap">the roadmap</Link> for the next planned work and the
+          evidence behind each status.
         </li>
       </ul>
     </DocPage>

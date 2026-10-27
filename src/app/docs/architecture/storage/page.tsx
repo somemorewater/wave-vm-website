@@ -8,7 +8,7 @@ import { sourceUrl } from "@/config";
 export const metadata: Metadata = {
   title: "Storage and configuration",
   description:
-    "Wave VM's application data directory, schema-v2 config.json, VM disks, atomic writes, and Unix permissions.",
+    "Wave VM's application data directory, schema-v3 config.json, VM disks, installation media paths, atomic writes, and Unix permissions.",
 };
 
 export default function StoragePage() {
@@ -39,9 +39,9 @@ export default function StoragePage() {
 
       <h2>Created files</h2>
       <pre>
-        <code>{`config.json             # versioned application configuration (schema v2)
+        <code>{`config.json             # versioned application configuration (schema v3)
 vms/<machine-id>/       # one directory per machine
-  disk.qcow2            # blank QCOW2 virtual disk
+  disk.qcow2            # QCOW2 virtual disk
   qemu.log              # latest QEMU run log
   qmp.sock              # private QMP socket while running`}</code>
       </pre>
@@ -53,17 +53,31 @@ vms/<machine-id>/       # one directory per machine
 
       <h2>Configuration schema</h2>
       <p>
-        The current schema is version 2. <code>config.json</code> contains{" "}
+        The current schema is version 3. <code>config.json</code> contains{" "}
         <code>schemaVersion</code>, <code>createdAtUnix</code>,{" "}
         <code>lastOpenedUnix</code>, and a <code>vms</code> array. Each VM record stores
         its identifier, name, guest architecture, memory, virtual CPUs, disk path, disk
-        size, lifecycle state, optional last error, and timestamps.
+        size, lifecycle state, optional installation ISO path, boot mode, optional last
+        error, and timestamps.
       </p>
       <p>
-        Schema versions 0 and 1 are migrated to version 2. A version newer than the
+        Schema versions 0, 1, and 2 are migrated to version 3. A version newer than the
         supported schema is rejected with <code>config_version_unsupported</code> rather
         than being silently rewritten. Persisted starting, running, or stopping states are
         reconciled when the application starts.
+      </p>
+
+      <h2>Installation media paths</h2>
+      <p>
+        The selected ISO is not copied into the application data directory. The
+        configuration stores its canonical absolute path and boot mode, and QEMU reads the
+        file from its original location when installer boot is selected. If the file is
+        moved or deleted, the machine reports the media as unavailable and installer boot
+        will not start. The disk boot path does not require the ISO to be present.
+      </p>
+      <p>
+        The ISO path is local application data and can reveal a directory name. It is not
+        sent over a network by Wave VM. The console password is not written to this file.
       </p>
 
       <h2>Atomic writes and permissions</h2>
@@ -76,9 +90,10 @@ vms/<machine-id>/       # one directory per machine
       </p>
 
       <DocNote title="Storage management is read-only" tone="info">
-        Disk creation is implemented, but resizing, deleting, compacting, and attaching
-        existing disks are not. The Storage page is an inventory. Wave VM preserves
-        existing disks and machine directories rather than removing them automatically.
+        Disk creation and local ISO attachment are implemented, but resizing, deleting,
+        compacting, attaching existing disks, and automatic media cleanup are not. The
+        Storage page is an inventory. Wave VM preserves existing disks and machine
+        directories rather than removing them automatically.
       </DocNote>
 
       <h2>Source references</h2>
@@ -102,6 +117,16 @@ vms/<machine-id>/       # one directory per machine
             vm/disk.rs
           </a>{" "}
           — QCOW2 creation and overwrite protection.
+        </li>
+        <li>
+          <a
+            href={sourceUrl("src-tauri/src/vm/media.rs")}
+            rel="noreferrer"
+            target="_blank"
+          >
+            vm/media.rs
+          </a>{" "}
+          — installation ISO validation and availability checks.
         </li>
         <li>
           <a

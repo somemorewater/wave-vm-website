@@ -58,9 +58,10 @@ pnpm build`}</code>
       <h2>What a passing check means</h2>
       <p>
         A passing build means the code compiles and the static checks succeed. It does not
-        prove that a guest operating system boots, that a particular QEMU build exposes
-        the required console transport, or that every guest input and reconnect path
-        works. Those behaviors require the maintainer&apos;s scenario testing.
+        prove that a guest operating system boots, that a local ISO installer is detected,
+        that a particular QEMU build exposes the required console transport, or that every
+        guest input and reconnect path works. Those behaviors require the maintainer&apos;s
+        scenario testing.
       </p>
 
       <p>

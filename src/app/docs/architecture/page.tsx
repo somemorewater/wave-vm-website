@@ -7,7 +7,7 @@ import DocPage from "@/components/DocPage";
 export const metadata: Metadata = {
   title: "Architecture",
   description:
-    "The current Wave VM architecture: Tauri shell, Rust backend modules, static frontend, QEMU lifecycle, QMP, and local persistence.",
+    "The current Wave VM architecture: Tauri shell, Rust backend modules, static frontend, local installation media, QEMU lifecycle, QMP, and local persistence.",
 };
 
 export default function ArchitecturePage() {
@@ -15,9 +15,10 @@ export default function ArchitecturePage() {
     <DocPage href="/docs/architecture">
       <p>
         Wave VM is a Tauri 2 desktop application. The Rust backend is authoritative for
-        host detection, VM validation, persistence, disk creation, and process lifecycle.
-        The frontend is static HTML, CSS, and JavaScript served by Tauri; it renders
-        structured results and invokes a small set of commands.
+        host detection, VM validation, persistence, disk creation, installation-media
+        validation, and process lifecycle. The frontend is static HTML, CSS, and
+        JavaScript served by Tauri; it renders structured results and invokes a small set
+        of commands.
       </p>
 
       <h2>Current components</h2>
@@ -25,8 +26,8 @@ export default function ArchitecturePage() {
         <code>{`src/                     Vanilla HTML, CSS, and ES modules
   app.js                 Bootstrap, router wiring, page lifecycle
   components/            Persistent shell and reusable UI
-  pages/                 Dashboard, machines, storage, media, settings
-  services/              Tauri command wrappers and preferences
+  pages/                 Dashboard, machines, storage, installation media, settings
+  services/              Tauri command wrappers, window controls, preferences
   state/                 Shared host and machine state
   vendor/novnc/          Bundled noVNC client and licenses
 src-tauri/src/
@@ -35,7 +36,7 @@ src-tauri/src/
   host/                  Host diagnostics, memory/storage, KVM probe
   qemu/                  Executable discovery, safe version probing
   qmp/                   Minimal QMP client over a local Unix socket
-  vm/                    VM models, validation, disk creation, process lifecycle
+  vm/                    VM models, validation, disk creation, media, process lifecycle
   error.rs               Shared serialized application errors
   state.rs               Application state and tracked QEMU processes`}</code>
       </pre>
@@ -46,25 +47,28 @@ src-tauri/src/
         <li>Collect host diagnostics and report warnings.</li>
         <li>Discover QEMU and qemu-img executables and probe their versions.</li>
         <li>Verify Linux KVM by opening the device and issuing an ioctl.</li>
-        <li>Validate and persist machine definitions.</li>
+        <li>Validate and persist machine definitions, optional installation media, and boot mode.</li>
         <li>Create QCOW2 disks without overwriting existing files.</li>
+        <li>Validate selected local ISO files and attach them as read-only installer media.</li>
         <li>Launch, track, and stop QEMU processes, with QMP control and bounded termination fallbacks.</li>
         <li>Configure a loopback VNC WebSocket listener and expose a per-run console session.</li>
+        <li>Toggle native window fullscreen for the console.</li>
         <li>Serialize errors into a stable shape for the frontend.</li>
       </ul>
 
       <h3>Frontend responsibilities</h3>
       <ul>
-        <li>Render loading, error, empty, host-readiness, machine, storage, and console states.</li>
+        <li>Render loading, error, empty, host-readiness, machine, storage, media, and console states.</li>
         <li>Invoke the registered commands through Tauri&apos;s command bridge.</li>
         <li>Present lifecycle state and backend errors without inventing state.</li>
-        <li>Connect the bundled noVNC client to the loopback console session.</li>
+        <li>Select local ISO files through the native dialog and present installer or disk boot choices.</li>
+        <li>Connect the bundled noVNC client to the loopback console session and manage fullscreen and pointer capture.</li>
       </ul>
 
       <DocNote title="This is the current architecture" tone="info">
-        There is no media manager, networking module, snapshot layer, or machine editing
-        workflow yet. The architecture documentation describes what exists, not a
-        completed target design.
+        Local installation media exists, but there is no networking module, snapshot layer,
+        or machine editing workflow yet. The architecture documentation describes what
+        exists, not a completed target design.
       </DocNote>
 
       <h2>Explore the details</h2>
@@ -79,7 +83,8 @@ src-tauri/src/
         </li>
         <li>
           <Link href="/docs/architecture/storage">Storage and configuration</Link> —
-          schema-v2 config, VM disks, atomic writes, and permissions.
+          schema-v3 config, VM disks, installation media paths, atomic writes, and
+          permissions.
         </li>
         <li>
           <Link href="/docs/architecture/security">Security model</Link> — current

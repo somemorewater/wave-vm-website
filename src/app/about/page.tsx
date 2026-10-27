@@ -49,7 +49,7 @@ const technology = [
   },
   {
     title: "QEMU integration",
-    description: "Discovery, QCOW2 disk creation, launch, and start/stop lifecycle control.",
+    description: "Discovery, QCOW2 disk creation, local ISO installer boot, launch, and start/stop lifecycle control.",
     status: "available" as const,
   },
   {
@@ -59,12 +59,12 @@ const technology = [
   },
   {
     title: "VNC and noVNC console",
-    description: "Loopback-only guest display through QEMU WebSocket VNC and noVNC.",
+    description: "Loopback-only guest display through QEMU WebSocket VNC and noVNC, with fullscreen and pointer capture.",
     status: "available" as const,
   },
   {
     title: "Versioned JSON configuration",
-    description: "Schema-v2 config.json with VM definitions, atomic writes, and restrictive permissions.",
+    description: "Schema-v3 config.json with VM definitions, installation media, boot mode, atomic writes, and restrictive permissions.",
     status: "available" as const,
   },
 ];
@@ -199,8 +199,8 @@ export default function AboutPage() {
             </p>
             <p>
               Wave VM is not a cloud service, a libvirt wrapper, or a bundle of guest
-              operating systems. It is a small desktop application being built one
-              verified slice at a time.
+              operating systems. It boots installation media that you provide and is being
+              built one verified slice at a time.
             </p>
             <p>
               {githubUrl ? (

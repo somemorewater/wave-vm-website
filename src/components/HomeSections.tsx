@@ -6,7 +6,12 @@ import StatusBadge from "./StatusBadge";
 import s from "./landing.module.css";
 
 const availableFeatures = featureGroups.find((group) => group.status === "available")?.items ?? [];
-const featuredFeatureIds = ["vm-definitions", "qemu-lifecycle", "graphical-console"];
+const featuredFeatureIds = [
+  "vm-definitions",
+  "installation-media",
+  "qemu-lifecycle",
+  "graphical-console",
+];
 const previewFeatures = featuredFeatureIds
   .map((id) => availableFeatures.find((feature) => feature.id === id))
   .filter((feature) => feature !== undefined);
@@ -39,11 +44,12 @@ export function StatusSnapshot() {
       <div className={`${s.wrap} ${s.statusLayout}`}>
         <div className={s.statusIntro}>
           <p className={s.kicker}>Current status</p>
-          <h2 id="current-status-title">A real lifecycle. Not a finished VM manager.</h2>
+          <h2 id="current-status-title">A real lifecycle. Local installers. Not a finished VM manager.</h2>
           <p>
-            The desktop shell, host diagnostics, machine definitions, QCOW2 disks, QEMU
-            start and stop, QMP control, and a loopback noVNC console are implemented.
-            Guest installation and networking are still ahead.
+            The desktop shell, host diagnostics, machine definitions, QCOW2 disks, local
+            ISO installer boot, real QEMU processes, QMP control, and a loopback noVNC
+            console are implemented. Guest networking, deeper machine management, and
+            packaging are still ahead.
           </p>
         </div>
 
@@ -52,8 +58,9 @@ export function StatusSnapshot() {
             <span className={s.statusCardLabel}>Current milestone</span>
             <strong className={s.statusCardValue}>{currentStage.title}</strong>
             <p className={s.statusCardText}>
-              Machines can be created, started, stopped, and opened in a genuine guest
-              console. The code is public and inspectable.
+              Machines can be created with optional local installation media, started,
+              stopped, and opened in a genuine guest console. The code is public and
+              inspectable.
             </p>
             <Link className={s.statusCardLink} href="/roadmap">
               See what is complete <span aria-hidden="true">→</span>
@@ -62,12 +69,12 @@ export function StatusSnapshot() {
 
           <div className={s.statusCard}>
             <span className={s.statusCardLabel}>Next milestone</span>
-            <strong className={s.statusCardValue}>Installation media and networking</strong>
+            <strong className={s.statusCardValue}>Guest networking</strong>
             <p className={s.statusCardText}>
-              Planned, not started. The current build cannot install a guest operating
-              system or configure guest networking.
+              Planned, not started. QEMU currently starts with no guest network device.
+              Networking configuration does not exist yet.
             </p>
-            <Link className={s.statusCardLink} href="/roadmap#media-networking">
+            <Link className={s.statusCardLink} href="/roadmap#guest-networking">
               Inspect the next phase <span aria-hidden="true">→</span>
             </Link>
           </div>
@@ -96,14 +103,15 @@ export function FeaturePreview() {
         <div className={s.sectionHeader}>
           <p className={s.kicker}>Available now</p>
           <h2 id="available-features-title">
-            Real machines. <span>No mock controls.</span>
+            Real machines. <span>Real installers.</span>
           </h2>
         </div>
 
         <div className={s.featureIntro}>
           <p>
             The current build creates local machine definitions, QCOW2 disks, and real
-            QEMU processes. A running machine can be opened in its actual guest console.
+            QEMU processes. It can boot a local ISO as a read-only installer and open the
+            actual guest console.
           </p>
           <Link className={s.textLink} href="/features">
             See all features <span aria-hidden="true">→</span>
@@ -114,7 +122,7 @@ export function FeaturePreview() {
           {previewFeatures.map((feature, index) => (
             <li key={feature.id}>
               <span aria-hidden="true" className={s.featureGlyph}>
-                {["▣", "⌁", "◇"][index]}
+                {["▣", "◈", "⌁", "◇"][index]}
               </span>
               <div>
                 <span className={s.featureNumber}>
@@ -142,9 +150,9 @@ export function RoadmapPreview() {
             The path to a <span>complete machine.</span>
           </h2>
           <p>
-            The foundation, host checks, VM lifecycle, and graphical console are
-            implemented. Guest installation media, networking, and packaging are still
-            ahead.
+            The foundation, host checks, VM lifecycle, local ISO installation media, and
+            graphical console are implemented. Guest networking, machine management, and
+            packaging are still ahead.
           </p>
           <Link className={s.textLink} href="/roadmap">
             See the full roadmap <span aria-hidden="true">→</span>

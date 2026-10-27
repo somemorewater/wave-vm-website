@@ -16,8 +16,8 @@ export default function BuildingPage() {
       <p>
         The desktop application is a Tauri 2 project. The frontend is static and has no
         bundler; Tauri serves the files in <code>src/</code>. The Rust backend owns host
-        detection, VM validation, persistence, disk creation, and the QEMU process
-        lifecycle.
+        detection, VM validation, persistence, disk creation, installation-media
+        validation, and the QEMU process lifecycle.
       </p>
 
       <h2>Clone and install</h2>
@@ -73,14 +73,19 @@ npx tauri build --no-bundle`}</code>
         On first launch, the application resolves the platform application data
         directory from the bundle identifier <code>com.wavevm.desktop</code> and creates{" "}
         <code>config.json</code> and a <code>vms/</code> directory. The configuration is
-        schema version 2 and is written atomically. Each machine receives its own
+        schema version 3 and is written atomically. Each machine receives its own
         directory:
       </p>
       <pre>
         <code>{`vms/<machine-id>/
   disk.qcow2   # blank QCOW2 virtual disk
-  qemu.log     # latest QEMU run log`}</code>
+  qemu.log     # latest QEMU run log
+  qmp.sock     # private QMP socket while running`}</code>
       </pre>
+      <p>
+        A selected ISO stays at its original location and is referenced by absolute path
+        in the local configuration. It is not copied into the machine directory.
+      </p>
       <p>
         See <Link href="/docs/architecture/storage">Storage and configuration</Link> for
         the details and platform paths.

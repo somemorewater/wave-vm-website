@@ -93,10 +93,11 @@ export default function FeaturesPage() {
 
       <div className={ui.wrap}>
         <div className={`${ui.notice} ${ui.noticeInfo}`} style={{ marginTop: "2rem" }}>
-          <strong>Current build:</strong> Milestone 2. Machine definitions, QCOW2 disks,
-          QEMU start and stop, QMP lifecycle control, and a loopback noVNC console are
-          implemented. Guest operating system installation, networking, and machine
-          editing are not.
+          <strong>Current build:</strong> Milestone 4. Machine definitions, QCOW2 disks,
+          local ISO attachment, installer and disk boot modes, QEMU start and stop, QMP
+          lifecycle control, and a loopback noVNC console with fullscreen and mouse
+          capture are implemented. Guest networking, machine editing, snapshots, and
+          release packaging are not.
         </div>
       </div>
 

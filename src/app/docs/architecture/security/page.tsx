@@ -16,8 +16,9 @@ export default function SecurityPage() {
     <DocPage href="/docs/architecture/security">
       <p>
         Wave VM runs as the current user, does not require root, and keeps virtualization
-        control interfaces local. The current build starts real QEMU processes, so the
-        security model now includes process control and a guest display transport.
+        control interfaces local. The current build starts real QEMU processes and opens
+        local installation media, so the security model includes process control, guest
+        display transport, ISO path validation, and fullscreen/pointer-lock handling.
       </p>
 
       <h2>Current protections</h2>
@@ -31,7 +32,9 @@ export default function SecurityPage() {
         <li>QMP uses a private Unix domain socket in the machine directory.</li>
         <li>QEMU VNC is bound to 127.0.0.1 and exposed over WebSocket only on loopback.</li>
         <li>The console password is generated per run and kept in memory, not in VM configuration.</li>
+        <li>Installation ISO paths are selected through the native dialog and validated in Rust; the media is attached read-only.</li>
         <li>QEMU is launched with no guest network device.</li>
+        <li>Pointer Lock requests are explicitly allowed for console mouse capture; other webview permission kinds use the default response.</li>
       </ul>
 
       <h2>Local control boundary</h2>
@@ -49,22 +52,24 @@ export default function SecurityPage() {
 
       <h2>Input and data handling</h2>
       <p>
-        Machine names, resources, and disk sizes are validated in Rust. Disk paths are
-        checked to remain inside the Wave VM data directory before launch. QEMU arguments
-        are constructed as vectors, not shell strings. Existing disks are never
-        overwritten.
+        Machine names, resources, disk sizes, and installation ISO paths are validated in
+        Rust. Disk paths are checked to remain inside the Wave VM data directory before
+        launch. QEMU arguments are constructed as vectors, not shell strings. Existing
+        disks are never overwritten.
       </p>
       <p>
-        Imported disk images and ISO files are not supported yet. When media support is
-        added, imported files must be treated as untrusted inputs and verified where
-        reliable data exists.
+        A local ISO is treated as untrusted input. The file is opened to check
+        readability and passed read-only to QEMU; its contents are not executed by Wave VM.
+        There is no checksum or signature verification, no media catalogue, and no
+        download path. Importing an existing virtual disk is not supported.
       </p>
 
       <h2>Known limitations</h2>
       <ul>
         <li>No security audit has been performed.</li>
         <li>No release artifacts or update mechanism exist.</li>
-        <li>Guest installation media, networking, USB passthrough, snapshots, and machine editing are not implemented.</li>
+        <li>No checksum or signature verification of installation media exists.</li>
+        <li>Guest networking, USB passthrough, snapshots, and machine editing are not implemented.</li>
         <li>Cleanup after a force-killed desktop process is not guaranteed for an already running QEMU child.</li>
         <li>Linux x86_64 is the only exercised host; Windows and macOS security behavior has not been verified.</li>
       </ul>
@@ -110,6 +115,16 @@ export default function SecurityPage() {
             config/store.rs
           </a>{" "}
           — file permissions and atomic writes.
+        </li>
+        <li>
+          <a
+            href={sourceUrl("src-tauri/src/vm/media.rs")}
+            rel="noreferrer"
+            target="_blank"
+          >
+            vm/media.rs
+          </a>{" "}
+          — installation ISO validation.
         </li>
       </ul>
 

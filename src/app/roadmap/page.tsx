@@ -16,7 +16,7 @@ import ui from "@/components/ui.module.css";
 export const metadata: Metadata = {
   title: "Roadmap",
   description:
-    "Wave VM's development roadmap, implemented VM lifecycle and console, and planned guest installation, networking, and packaging work.",
+    "Wave VM's development roadmap: the implemented VM lifecycle, local ISO installation media, and console, plus planned guest networking and packaging work.",
 };
 
 export default function RoadmapPage() {
@@ -56,7 +56,7 @@ export default function RoadmapPage() {
               <p className={roadmap.currentNote}>{currentStage.note}</p>
             </div>
             <div className={roadmap.currentNext}>
-              <p className={roadmap.currentNextLabel}>Next milestone</p>
+              <p className={roadmap.currentNextLabel}>Next identified phase</p>
               <p className={roadmap.currentNextTitle}>{currentStage.nextTitle}</p>
               <StatusBadge status={currentStage.nextStatus} />
             </div>

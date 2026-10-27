@@ -17,8 +17,8 @@ export default function ApplicationBoundariesPage() {
       <p>
         The application has two explicit sides: a static frontend served by Tauri and a
         Rust backend exposed through narrowly scoped commands. The backend is
-        authoritative for host detection, VM validation, persistence, disk creation, and
-        process lifecycle.
+        authoritative for host detection, VM validation, persistence, disk creation,
+        installation-media validation, and process lifecycle.
       </p>
 
       <h2>Tauri shell</h2>
@@ -29,7 +29,7 @@ export default function ApplicationBoundariesPage() {
       </p>
 
       <h2>Command surface</h2>
-      <p>The current invoke handler registers seven commands:</p>
+      <p>The current invoke handler registers twelve commands:</p>
       <ul>
         <li>
           <code>get_app_info</code> — returns the application name, version, data
@@ -58,12 +58,28 @@ export default function ApplicationBoundariesPage() {
           <code>get_vm_console</code> — returns the loopback WebSocket URL and per-run
           password for a running machine.
         </li>
+        <li>
+          <code>pick_iso_file</code> — opens the native file dialog, filtered to ISO files.
+        </li>
+        <li>
+          <code>set_vm_install_iso</code> — validates and stores installation media for a
+          stopped machine, or detaches it.
+        </li>
+        <li>
+          <code>set_vm_boot_mode</code> — selects installer or disk boot for a stopped
+          machine and requires available media for installer boot.
+        </li>
+        <li>
+          <code>set_window_fullscreen</code> and <code>get_window_fullscreen</code> —
+          control and report native fullscreen for the console.
+        </li>
       </ul>
       <p>
         The frontend calls these through <code>window.__TAURI__.core.invoke</code> from{" "}
-        <code>src/services/tauri.js</code> and the service wrappers. There is no
-        arbitrary filesystem command, arbitrary QEMU argument command, media command, or
-        networking command.
+        <code>src/services/tauri.js</code> and the service wrappers. There is no arbitrary
+        filesystem command, arbitrary QEMU argument command, networking command, or machine
+        editing command. The ISO picker uses the native dialog; it does not accept
+        arbitrary paths from web content.
       </p>
 
       <h2>Frontend boundary</h2>
@@ -79,13 +95,16 @@ export default function ApplicationBoundariesPage() {
         The capability set is minimal and scoped to the main window. The Content Security
         Policy restricts scripts, styles, images, fonts, and connections to local
         application resources, the Tauri IPC endpoint, and loopback WebSocket connections
-        for the console. Remote web content is not loaded into a privileged window.
+        for the console. Remote web content is not loaded into a privileged window. The
+        application explicitly allows webview Pointer Lock requests for console mouse
+        capture and leaves other permission kinds at the default response.
       </p>
 
       <DocNote title="The command surface is still narrow" tone="info">
-        The current commands cover the implemented lifecycle. Media, networking, machine
-        editing, reset, and snapshot operations do not have commands. The surface will
-        need to grow carefully as those features are implemented.
+        The current commands cover the implemented lifecycle, local installation media,
+        console access, and fullscreen. Guest networking, machine editing, reset, and
+        snapshot operations do not have commands. The surface will need to grow carefully
+        as those features are implemented.
       </DocNote>
 
       <h2>Source references</h2>
@@ -105,6 +124,26 @@ export default function ApplicationBoundariesPage() {
             commands/vm.rs
           </a>{" "}
           — VM creation, lifecycle, and console commands.
+        </li>
+        <li>
+          <a
+            href={sourceUrl("src-tauri/src/commands/media.rs")}
+            rel="noreferrer"
+            target="_blank"
+          >
+            commands/media.rs
+          </a>{" "}
+          — installation media selection, attachment, and boot mode.
+        </li>
+        <li>
+          <a
+            href={sourceUrl("src-tauri/src/commands/window.rs")}
+            rel="noreferrer"
+            target="_blank"
+          >
+            commands/window.rs
+          </a>{" "}
+          — native fullscreen control.
         </li>
         <li>
           <a href={sourceUrl("src/app.js")} rel="noreferrer" target="_blank">

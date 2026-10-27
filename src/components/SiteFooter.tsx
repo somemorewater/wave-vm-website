@@ -67,7 +67,7 @@ export default function SiteFooter() {
         <div className={styles.footerBottom}>
           <span>Wave VM · Ride your own systems.</span>
           <span>
-            Built with Tauri 2, Rust, and a vanilla web frontend.{" "}
+            Built with Tauri 2, Rust, QEMU, and a vanilla web frontend.{" "}
             {githubUrl ? (
               <a href={githubUrl} rel="noreferrer" target="_blank">
                 Follow development

@@ -85,7 +85,7 @@ export const featureGroups: FeatureGroup[] = [
         id: "vm-definitions",
         title: "Virtual machine definitions",
         description:
-          "Creates and persists local machine definitions with a validated name, x86_64 guest architecture, memory, virtual CPU count, and disk size. Definitions are stored in the schema-v2 configuration.",
+          "Creates and persists local machine definitions with a validated name, x86_64 guest architecture, memory, virtual CPU count, disk size, optional installation ISO, and boot mode. Definitions are stored in the schema-v3 configuration.",
         status: "available",
         evidence: [
           { label: "commands/vm.rs", href: sourceUrl("src-tauri/src/commands/vm.rs") },
@@ -106,13 +106,13 @@ export const featureGroups: FeatureGroup[] = [
           { label: "commands/vm.rs", href: sourceUrl("src-tauri/src/commands/vm.rs") },
         ],
         limitation:
-          "Disks are blank. Resizing, deleting, attaching existing disks, and inspecting disk usage are not available.",
+          "New disks are blank until a guest is installed. Resizing, deleting, attaching existing disks, and inspecting disk usage are not available.",
       },
       {
         id: "qemu-lifecycle",
         title: "Real QEMU process lifecycle",
         description:
-          "Starts QEMU with the configured memory, virtual CPUs, and disk. KVM is used only when its probe succeeds; otherwise QEMU uses software emulation (TCG). Stop uses QMP with bounded process-termination fallbacks.",
+          "Starts QEMU with the configured memory, virtual CPUs, q35 machine, and virtio-blk disk. Installer boot attaches the selected ISO as a read-only CD/DVD and boots it first; disk boot starts from the virtual disk. KVM is used only when its probe succeeds; otherwise QEMU uses software emulation (TCG). Stop uses QMP with bounded process-termination fallbacks.",
         status: "available",
         evidence: [
           {
@@ -123,7 +123,7 @@ export const featureGroups: FeatureGroup[] = [
           { label: "state.rs", href: sourceUrl("src-tauri/src/state.rs") },
         ],
         limitation:
-          "Start and stop are the only lifecycle controls. Pause, reset, snapshots, and networking are not implemented.",
+          "Start and stop are the only lifecycle controls. Pause, reset, snapshots, guest networking, and USB passthrough are not implemented.",
       },
       {
         id: "qmp-control",
@@ -145,7 +145,7 @@ export const featureGroups: FeatureGroup[] = [
         id: "graphical-console",
         title: "Interactive guest console",
         description:
-          "Displays the actual guest framebuffer through QEMU WebSocket VNC and the bundled noVNC 1.7.0 client. The listener is bound to 127.0.0.1, the WebSocket port is discovered through QMP, and a password is generated per run and kept in memory only.",
+          "Displays the actual guest framebuffer through QEMU WebSocket VNC and the bundled noVNC 1.7.0 client. The listener is bound to 127.0.0.1, the WebSocket port is discovered through QMP, and a password is generated per run and kept in memory only. F11 or the console controls toggle native fullscreen; mouse capture uses Pointer Lock and Esc releases it.",
         status: "available",
         evidence: [
           {
@@ -162,13 +162,37 @@ export const featureGroups: FeatureGroup[] = [
           },
         ],
         limitation:
-          "The console is available only while the machine is running and requires QEMU WebSocket VNC support. No guest operating system is installed by this build, so the display may show only firmware or a no-bootable-device message.",
+          "The console is available only while the tracked QEMU process is running and requires QEMU WebSocket VNC support. Fullscreen and pointer lock depend on the desktop webview. There is no remote access, audio, USB redirection, or multi-monitor control.",
+      },
+      {
+        id: "installation-media",
+        title: "Local installation media",
+        description:
+          "Selects an existing local .iso through the native file dialog, validates the path and file, and stores the absolute path plus boot mode in the schema-v3 configuration. Installer boot passes the ISO to QEMU as a read-only CD/DVD and boots it before the virtual disk. Media can be attached, replaced, or detached while the machine is stopped. The ISO is never copied, modified, or deleted.",
+        status: "available",
+        evidence: [
+          { label: "vm/media.rs", href: sourceUrl("src-tauri/src/vm/media.rs") },
+          {
+            label: "commands/media.rs",
+            href: sourceUrl("src-tauri/src/commands/media.rs"),
+          },
+          {
+            label: "media-page.js",
+            href: sourceUrl("src/pages/installation-media/media-page.js"),
+          },
+          {
+            label: "vm/runtime.rs",
+            href: sourceUrl("src-tauri/src/vm/runtime.rs"),
+          },
+        ],
+        limitation:
+          "No image downloads, media catalogue, checksum or signature verification, installation-completion detection, multiple CD/DVD drives, or additional driver media. ISO paths containing commas, newlines, or carriage returns are rejected. Some Windows installers may not see the virtio-blk disk without drivers supplied by the guest image.",
       },
       {
         id: "config-store",
         title: "Versioned local configuration",
         description:
-          "Writes schema-v2 config.json atomically in the platform application data directory. Schema versions 0 and 1 are migrated to version 2, which stores VM definitions. On Unix, directories use 0700 permissions and the configuration file uses 0600.",
+          "Writes schema-v3 config.json atomically in the platform application data directory. Schema versions 0, 1, and 2 migrate to version 3, which stores VM definitions, optional installation media, and boot mode. On Unix, directories use 0700 permissions and the configuration file uses 0600.",
         status: "available",
         evidence: [
           { label: "config/store.rs", href: sourceUrl("src-tauri/src/config/store.rs") },
@@ -209,7 +233,7 @@ export const featureGroups: FeatureGroup[] = [
         id: "machine-management",
         title: "Machine management",
         description:
-          "Creating a machine and starting or stopping it are implemented. The interface shows saved definitions, disk presence, acceleration, lifecycle state, and backend errors.",
+          "Creating a machine, attaching or replacing local installation media, choosing installer or disk boot, and starting or stopping the machine are implemented. The interface shows saved definitions, media availability, disk presence, acceleration, lifecycle state, and backend errors.",
         status: "in-development",
         evidence: [
           {
@@ -220,9 +244,13 @@ export const featureGroups: FeatureGroup[] = [
             label: "vm-details-page.js",
             href: sourceUrl("src/pages/virtual-machines/vm-details-page.js"),
           },
+          {
+            label: "media-page.js",
+            href: sourceUrl("src/pages/installation-media/media-page.js"),
+          },
         ],
         limitation:
-          "There is no interface for editing configuration, deleting a machine, resetting it, or taking snapshots. Existing disks and machine directories are preserved.",
+          "There is no interface for editing resources or boot media while running, deleting a machine, resetting it, or taking snapshots. Existing disks and machine directories are preserved.",
       },
       {
         id: "failure-reporting",
@@ -251,24 +279,24 @@ export const featureGroups: FeatureGroup[] = [
       "These are development targets. They are not present in the current desktop build and no dates or completion estimates are implied.",
     items: [
       {
-        id: "installation-media",
-        title: "Installation media and guest installation",
+        id: "networking",
+        title: "Guest networking",
         description:
-          "Select local ISO images, verify them when reliable checksum or signature data is available, attach them to a machine, and support a guest operating system installation workflow.",
+          "Present the guest with a virtual Ethernet adapter and provide a safe local networking configuration without exposing unauthenticated control interfaces.",
         status: "planned",
         evidence: [{ label: "Desktop README limitations", href: readme }],
         limitation:
-          "No ISO selection, media catalogue, attachment, download, or guest OS installation exists. The current disk is blank.",
+          "QEMU is currently launched with -nic none. There is no guest NIC, virtual Ethernet configuration, port forwarding, bridge setup, or networking UI.",
       },
       {
-        id: "networking",
-        title: "Networking",
+        id: "media-verification",
+        title: "Image verification and downloads",
         description:
-          "Network capability detection and local VM network configuration without exposing unauthenticated control interfaces.",
+          "Verify installation images when reliable checksum or signature data is available, and consider managed downloads from trustworthy sources.",
         status: "planned",
         evidence: [{ label: "Desktop README limitations", href: readme }],
         limitation:
-          "QEMU is currently launched with no guest network device. No networking configuration exists.",
+          "Only local user-supplied ISO files are supported. There is no downloader, catalogue, checksum verification, or signature verification.",
       },
       {
         id: "reset-snapshots",

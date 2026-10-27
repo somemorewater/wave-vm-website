@@ -45,7 +45,7 @@ export const docSections: DocSection[] = [
   {
     title: "User Guide",
     href: "/docs/user-guide",
-    description: "The current VM workflow, host readiness, lifecycle controls, and known limits.",
+    description: "The current machine workflow, installation media, lifecycle controls, console, and networking limits.",
     pages: [
       {
         title: "User Guide",
@@ -66,8 +66,8 @@ export const docSections: DocSection[] = [
       {
         title: "Disks and installation media",
         href: "/docs/user-guide/disks-and-media",
-        description: "QCOW2 disk creation, missing media support, and planned ISO handling.",
-        status: "in-development",
+        description: "QCOW2 disk creation, local ISO attachment, and installer or disk boot.",
+        status: "available",
       },
       {
         title: "Machine lifecycle",
@@ -78,15 +78,21 @@ export const docSections: DocSection[] = [
       {
         title: "Graphical console",
         href: "/docs/user-guide/console",
-        description: "Connect to the running guest through loopback VNC and noVNC.",
+        description: "Use the loopback noVNC console, fullscreen, and pointer capture.",
         status: "available",
+      },
+      {
+        title: "Networking",
+        href: "/docs/user-guide/networking",
+        description: "Why the current guest has no network interface and what virtual Ethernet would require.",
+        status: "planned",
       },
     ],
   },
   {
     title: "Architecture",
     href: "/docs/architecture",
-    description: "How the Tauri shell, Rust backend, QEMU lifecycle, QMP, and storage layers fit together.",
+    description: "How the Tauri shell, Rust backend, QEMU lifecycle, QMP, installation media, and storage layers fit together.",
     pages: [
       {
         title: "Architecture",
@@ -106,7 +112,7 @@ export const docSections: DocSection[] = [
       {
         title: "Storage and configuration",
         href: "/docs/architecture/storage",
-        description: "Application data, schema-v2 config.json, VM disks, atomic writes, and permissions.",
+        description: "Application data, schema-v3 config.json, VM disks, installation media paths, atomic writes, and permissions.",
       },
       {
         title: "Security model",

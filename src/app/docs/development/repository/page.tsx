@@ -23,19 +23,19 @@ export default function RepositoryPage() {
         <code>{`src/                     Vanilla HTML, CSS, and ES modules
   app.js                 Bootstrap, router wiring, page lifecycle
   components/            Persistent shell and reusable UI
-  pages/                 Dashboard, machines, storage, media, settings
-  services/              Tauri command wrappers and preferences
+  pages/                 Dashboard, machines, storage, installation media, settings
+  services/              Tauri command wrappers, window controls, preferences
   state/                 Shared host and machine state
   styles/                Tokens, layout, components, and page styles
   vendor/novnc/          Bundled noVNC client and licenses
   assets/brand/          Local Wave VM brand SVGs
 src-tauri/src/
-  commands/              Narrow Tauri command handlers
+  commands/              Narrow Tauri command handlers, including media and window
   config/                Versioned configuration and atomic persistence
   host/                  Host diagnostics, memory/storage, KVM probe
   qemu/                  Executable discovery, safe version probing
-  qmp/                   QMP client over a private Unix socket
-  vm/                    VM models, validation, disk creation, lifecycle
+  qmp.rs                 QMP client over a private Unix socket
+  vm/                    VM models, validation, disk creation, media, lifecycle
   error.rs               Shared serialized application errors
   state.rs               Application state and tracked QEMU processes
 src-tauri/capabilities/  Tauri capability scope

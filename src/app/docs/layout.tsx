@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s — Wave VM Docs",
   },
   description:
-    "Wave VM documentation: current project status, host readiness, architecture, storage, security, and development setup.",
+    "Wave VM documentation: current project status, machine creation, installation media, networking limits, architecture, storage, security, and development setup.",
 };
 
 export default function DocsLayout({ children }: { children: ReactNode }) {

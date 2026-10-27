@@ -45,6 +45,14 @@ export default function PrerequisitesPage() {
         established.
       </p>
 
+      <h3>Installation media</h3>
+      <p>
+        Guest installation uses a local <code>.iso</code> file that you provide. Wave VM
+        does not bundle, download, or verify guest images. The guest must also be able to
+        use the virtio-blk disk that Wave VM exposes; some Windows installers require
+        storage drivers that this build does not supply.
+      </p>
+
       <h3>Optional acceleration</h3>
       <p>
         A usable Linux KVM device at <code>/dev/kvm</code> enables hardware acceleration.

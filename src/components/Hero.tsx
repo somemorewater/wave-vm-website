@@ -5,124 +5,113 @@ import s from "./landing.module.css";
 function ProductPreview() {
   return (
     <figure
-      aria-label="Concept illustration of a virtual machine management dashboard"
+      aria-label="Diagram of the implemented Wave VM workflow"
       className={s.preview}
     >
       <div className={s.previewWindow}>
         <div className={s.windowBar}>
           <span className={s.windowLogo}>w</span>
           <b>Wave VM</b>
-          <span className={s.windowWorkspace}>WORKSPACE</span>
-          <span className={s.windowAvatar}>A</span>
+          <span className={s.windowWorkspace}>CURRENT BUILD</span>
+          <span className={s.windowAvatar}>4</span>
         </div>
         <div className={s.appLayout}>
           <aside className={s.appSidebar}>
             <span className={s.sidebarLabel}>
-              LIBRARY <b>＋</b>
+              IMPLEMENTED <b>✓</b>
             </span>
             <div className={`${s.machineRow} ${s.machineSelected}`}>
               <span className={s.stateOn} />
               <span>
-                <b>Ubuntu Dev</b>
-                <small>Ubuntu 24.04</small>
+                <b>Create machine</b>
+                <small>Validated resources</small>
               </span>
             </div>
             <div className={s.machineRow}>
-              <span className={s.stateOff} />
+              <span className={s.stateOn} />
               <span>
-                <b>Windows Lab</b>
-                <small>Windows 11</small>
+                <b>Boot installer</b>
+                <small>Local ISO, read-only</small>
               </span>
             </div>
             <div className={s.machineRow}>
-              <span className={s.stateOff} />
+              <span className={s.stateOn} />
               <span>
-                <b>Alpine Test</b>
-                <small>Alpine Linux</small>
+                <b>Open console</b>
+                <small>Loopback VNC</small>
               </span>
             </div>
             <div className={s.sidebarFoot}>
               <span className={s.localIcon}>⌂</span>
               <span>
                 <b>On this device</b>
-                <small>Local workspace</small>
+                <small>No account or cloud</small>
               </span>
             </div>
           </aside>
           <div className={s.appMain}>
             <div className={s.machineHeading}>
               <div>
-                <span className={s.previewBreadcrumb}>MACHINES / UBUNTU DEV</span>
-                <h3>Ubuntu Dev</h3>
+                <span className={s.previewBreadcrumb}>CURRENT BUILD / LOCAL WORKFLOW</span>
+                <h3>Create, install, run.</h3>
               </div>
               <span className={s.runningBadge}>
-                <i /> Running
+                <i /> Local only
               </span>
             </div>
             <div className={s.console}>
               <div className={s.consoleBar}>
-                <span>CONSOLE PREVIEW</span>
-                <span>● ● ●</span>
+                <span>IMPLEMENTED PATH</span>
+                <span>IMPLEMENTATION MAP</span>
               </div>
               <div className={s.terminal}>
-                <span className={s.terminalMuted}>ubuntu@wave-dev:~</span>
+                <span className={s.terminalMuted}>qemu-img</span>{" "}
+                <b>→ QCOW2 disk</b>
                 <br />
-                <span>$</span> <b>ready when you are</b>
-                <i className={s.cursor} />
+                <span className={s.terminalMuted}>qemu-system-x86_64</span>{" "}
+                <b>→ KVM or TCG</b>
+                <br />
+                <span className={s.terminalMuted}>noVNC</span>{" "}
+                <b>→ interactive console</b>
               </div>
             </div>
             <div className={s.resourceHeading}>
-              <b>Resources</b>
-              <span>Assigned to this machine</span>
+              <b>Available now</b>
+              <span>Milestone 4 · local ISO support</span>
             </div>
             <div className={s.resourceGrid}>
               <div className={s.resource}>
-                <span className={s.resourceGlyph}>⌘</span>
+                <span className={s.resourceGlyph}>▣</span>
                 <span>
-                  <small>PROCESSORS</small>
-                  <b>
-                    4 <small>cores</small>
-                  </b>
+                  <small>MACHINES</small>
+                  <b>QEMU</b>
                 </span>
-                <div className={s.resourceTrack}>
-                  <i style={{ width: "50%" }} />
-                </div>
               </div>
               <div className={s.resource}>
-                <span className={s.resourceGlyph}>▤</span>
+                <span className={s.resourceGlyph}>◈</span>
                 <span>
-                  <small>MEMORY</small>
-                  <b>
-                    8 <small>GB</small>
-                  </b>
+                  <small>MEDIA</small>
+                  <b>ISO</b>
                 </span>
-                <div className={s.resourceTrack}>
-                  <i style={{ width: "64%" }} />
-                </div>
               </div>
               <div className={s.resource}>
-                <span className={s.resourceGlyph}>◫</span>
+                <span className={s.resourceGlyph}>◇</span>
                 <span>
-                  <small>STORAGE</small>
-                  <b>
-                    64 <small>GB</small>
-                  </b>
+                  <small>CONSOLE</small>
+                  <b>noVNC</b>
                 </span>
-                <div className={s.resourceTrack}>
-                  <i style={{ width: "38%" }} />
-                </div>
               </div>
             </div>
             <div className={s.previewActions}>
-              <span className={s.pauseIcon}>Ⅱ</span>
-              <span>Pause machine</span>
-              <span className={s.moreIcon}>•••</span>
+              <span className={s.pauseIcon}>⛶</span>
+              <span>F11 fullscreen</span>
+              <span className={s.moreIcon}>Esc releases mouse</span>
             </div>
           </div>
         </div>
       </div>
       <figcaption>
-        <span className={s.captionDot} /> Interface concept · Planned product direction
+        <span className={s.captionDot} /> Implemented workflow · Not a product screenshot
       </figcaption>
     </figure>
   );
@@ -142,7 +131,7 @@ export default function Hero() {
             <em>own systems.</em>
           </h1>
           <p className={s.lede}>
-            A local-first desktop virtual machine manager. Every system, one place,
+            A free, open-source desktop virtual machine manager. Every system, one place,
             without an account or a cloud dependency.
           </p>
           <div className={s.heroActions}>

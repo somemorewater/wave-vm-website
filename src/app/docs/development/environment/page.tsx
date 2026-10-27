@@ -29,6 +29,7 @@ export default function EnvironmentPage() {
       <ul>
         <li>QEMU and qemu-img. The shell can start without them, but machines cannot be created or started.</li>
         <li>An accessible Linux KVM device at /dev/kvm is optional; without it, QEMU uses software emulation.</li>
+        <li>A local ISO is optional unless you want to boot an installer. Wave VM does not bundle or download guest images.</li>
       </ul>
       <pre>
         <code>{`git clone https://github.com/somemorewater/waveVM.git
